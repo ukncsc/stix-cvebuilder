@@ -32,4 +32,4 @@ $ sudo pip install -r requirements.txt
 ```
 
 ## License
-See the [LICENSE](LICENSE.md) file for license rights and limitations (GPLv3).
+See the [LICENSE](LICENSE) file for license rights and limitations (GPLv3).
