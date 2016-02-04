@@ -1,3 +1,11 @@
+"""
+The script will look at the first parameter as the CVE number and uses
+the ares module (https://github.com/mrsmn/ares), to provide data from
+https://cve.circl.lu/. This provides a quick and easy method of prototyping
+the core information from publicly available CVE information into a
+STIX package.
+"""
+
 from stix.core import STIXPackage, STIXHeader
 from stix.data_marking import Marking, MarkingSpecification
 from stix.exploit_target import ExploitTarget, Vulnerability, Weakness
@@ -16,7 +24,7 @@ NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
 
 
 def doMarking():
-    # Define the TLP marking and the inheritence
+    """Define the TLP marking and the inheritence."""
     marking_specification = MarkingSpecification()
     marking_specification.controlled_structure = "../../../../descendant-or-self::node() | ../../../../descendant-or-self::node()/@*"
     simple = SimpleMarkingStructure()
@@ -31,6 +39,7 @@ def doMarking():
 
 
 def cveSearch(var):
+    """Search for a CVE ID and return a STIX formatted response"""
     cve = CVESearch()
     data = json.loads(cve.id(var))
 
