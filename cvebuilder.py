@@ -46,8 +46,8 @@ def cveSearch(var):
 
     try:
         from stix.utils import set_id_namespace
-        set_id_namespace(NAMESPACE1)
-    except:
+        set_id_namespace(NAMESPACE)
+    except ImportError:
         from stix.utils import idgen
         from mixbox.namespaces import Namespace
         NAMESPACE = Namespace("http://avengers.example.com", "avengers", "")
