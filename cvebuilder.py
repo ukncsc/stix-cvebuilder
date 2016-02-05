@@ -19,32 +19,17 @@ import json
 import sys
 
 NAMESPACE = {"http://avengers.example.com", "avengers"}
-
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
+HNDL_ST = "This information may be distributed without restriction."
 
-
-def cveSearch(var):
-    cve = CVESearch()
-    data = json.loads(cve.id(var))
-
-    try:
-        from stix.utils import set_id_namespace
-        set_id_namespace(NAMESPACE1)
-    except:
-        from stix.utils import idgen
-        from mixbox.namespaces import Namespace
-        NAMESPACE = Namespace("http://avengers.example.com", "avengers", "")
-        idgen.set_id_namespace(NAMESPACE)
-
-    pkg = STIXPackage()
-    pkg.stix_header = STIXHeader()
 
 def doMarking():
     """Define the TLP marking and the inheritence."""
     marking_specification = MarkingSpecification()
-    marking_specification.controlled_structure = "../../../../descendant-or-self::node() | ../../../../descendant-or-self::node()/@*"
+    marking_specification.controlled_structure = "../../../../descendant"\
+        "-or-self::node() | ../../../../descendant-or-self::node()/@*"
     simple = SimpleMarkingStructure()
-    simple.statement = "This information may be distributed without restriction."
+    simple.statement = HNDL_ST
     marking_specification.marking_structures.append(simple)
     tlp = TLPMarkingStructure()
     tlp.color = "WHITE"
@@ -59,8 +44,17 @@ def cveSearch(var):
     cve = CVESearch()
     data = json.loads(cve.id(var))
 
-    set_id_namespace(NAMESPACE)
+    try:
+        from stix.utils import set_id_namespace
+        set_id_namespace(NAMESPACE1)
+    except:
+        from stix.utils import idgen
+        from mixbox.namespaces import Namespace
+        NAMESPACE = Namespace("http://avengers.example.com", "avengers", "")
+        idgen.set_id_namespace(NAMESPACE)
 
+    pkg = STIXPackage()
+    pkg.stix_header = STIXHeader()
     pkg = STIXPackage()
     pkg.stix_header = STIXHeader()
 
@@ -89,10 +83,6 @@ def cveSearch(var):
     # Add the vulnerability object to the package object
     et.add_vulnerability(vuln)
 
-    # Do some COA stuff
-    # coa = PotentialCOAs().PotentialCOA()
-    # print(dir(coa))
-
     # Do some TTP stuff with CAPEC objects
     for i in data['capec']:
         ttp = TTP()
@@ -104,7 +94,6 @@ def cveSearch(var):
     # Do some weakness stuff
     weak = Weakness()
     weak.cwe_id = data['cwe']
-    # weak.description = i['title']
     et.add_weakness(weak)
 
     # Add the exploit target to the package object
