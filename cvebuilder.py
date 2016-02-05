@@ -18,7 +18,6 @@ from ares import CVESearch
 import json
 import sys
 
-NAMESPACE = {"http://avengers.example.com", "avengers"}
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
 HNDL_ST = "This information may be distributed without restriction."
 
@@ -39,6 +38,25 @@ def doMarking():
     return handling
 
 
+def doVuln(data):
+    """Do some vulnerability stuff"""
+    vuln = Vulnerability()
+    vuln.cve_id = data['id']
+    vuln.source = NVD_URL + data['id']
+    vuln.title = data['id']
+    vuln.description = data['summary']
+    # The below has issues with python-stix 1.2 (https://github.com/STIXProject
+    # /python-stix/issues/276)
+    # vuln.published_datetime = data['Published']
+    vuln.references = data['references']
+    vuln.is_known = 1
+    # Create the CVSS object and then assign it to the vuln object
+    cvssvec = CVSSVector()
+    cvssvec.overall_score = data['cvss']
+    vuln.cvss_score = cvssvec
+    return vuln
+
+
 def cveSearch(var):
     """Search for a CVE ID and return a STIX formatted response"""
     cve = CVESearch()
@@ -46,6 +64,7 @@ def cveSearch(var):
 
     try:
         from stix.utils import set_id_namespace
+        NAMESPACE = {"http://avengers.example.com", "avengers"}
         set_id_namespace(NAMESPACE)
     except ImportError:
         from stix.utils import idgen
@@ -65,23 +84,8 @@ def cveSearch(var):
     et.title = data['id']
     et.description = data['summary']
 
-    # Do some vulnerability stuff
-    vuln = Vulnerability()
-    vuln.cve_id = data['id']
-    vuln.source = NVD_URL + data['id']
-    vuln.title = data['id']
-    vuln.description = data['summary']
-    # vuln.published_datetime = data['Published']
-    vuln.references = data['references']
-    vuln.is_known = 1
-
-    # Create the CVSS object and then assign it to the vuln object
-    cvssvec = CVSSVector()
-    cvssvec.overall_score = data['cvss']
-    vuln.cvss_score = cvssvec
-
     # Add the vulnerability object to the package object
-    et.add_vulnerability(vuln)
+    et.add_vulnerability(doVuln(data))
 
     # Do some TTP stuff with CAPEC objects
     for i in data['capec']:
