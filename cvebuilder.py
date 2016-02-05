@@ -17,7 +17,15 @@ from stix.ttp import TTP
 from ares import CVESearch
 import json
 import sys
+from ConfigParser import SafeConfigParser
+import os
 
+path = os.path.dirname(os.path.abspath(sys.argv[0]))
+parser = SafeConfigParser()
+parser.read(path + '/config.ini')
+
+NS_PREFIX = parser.get('STIX', 'ns_prefix')
+NS = parser.get('STIX', 'ns')
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
 HNDL_ST = "This information may be distributed without restriction."
 
@@ -64,13 +72,13 @@ def cveSearch(var):
 
     try:
         from stix.utils import set_id_namespace
-        NAMESPACE = {"http://avengers.example.com", "avengers"}
-        set_id_namespace(NAMESPACE)
+        namespace = {NS, NS_PREFIX}
+        set_id_namespace(namespace)
     except ImportError:
         from stix.utils import idgen
         from mixbox.namespaces import Namespace
-        NAMESPACE = Namespace("http://avengers.example.com", "avengers", "")
-        idgen.set_id_namespace(NAMESPACE)
+        namespace = Namespace(NS, NS_PREFIX, "")
+        idgen.set_id_namespace(namespace)
 
     pkg = STIXPackage()
     pkg.stix_header = STIXHeader()
