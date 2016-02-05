@@ -1,4 +1,6 @@
 # CVE-Builder
+[![Code Health](https://landscape.io/github/cwtaylor/cve-builder/master/landscape.svg?style=flat)](https://landscape.io/github/cwtaylor/cve-builder/master)
+
 CVE Builder script that generates STIX formatted Exploit Targets.
 
 The script will look at the first parameter as the CVE number and uses the ares module (https://github.com/mrsmn/ares), to provide data from https://cve.circl.lu/. This provides a quick and easy method of prototyping the core information from publicly available CVE information into a STIX package.

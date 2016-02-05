@@ -1,12 +1,18 @@
-from stix.coa import CourseOfAction
-from stix.common.related import RelatedCOA
+"""
+The script will look at the first parameter as the CVE number and uses
+the ares module (https://github.com/mrsmn/ares), to provide data from
+https://cve.circl.lu/. This provides a quick and easy method of prototyping
+the core information from publicly available CVE information into a
+STIX package.
+"""
+
 from stix.core import STIXPackage, STIXHeader
 from stix.data_marking import Marking, MarkingSpecification
-from stix.exploit_target import ExploitTarget, Vulnerability, PotentialCOAs, Weakness
+from stix.exploit_target import ExploitTarget, Vulnerability, Weakness
 from stix.exploit_target.vulnerability import CVSSVector
 from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
-from stix.ttp import TTP, Behavior
+from stix.ttp import TTP
 
 from ares import CVESearch
 import json
@@ -33,7 +39,8 @@ def cveSearch(var):
     pkg = STIXPackage()
     pkg.stix_header = STIXHeader()
 
-    # Define the TLP marking and the inheritence
+def doMarking():
+    """Define the TLP marking and the inheritence."""
     marking_specification = MarkingSpecification()
     marking_specification.controlled_structure = "../../../../descendant-or-self::node() | ../../../../descendant-or-self::node()/@*"
     simple = SimpleMarkingStructure()
@@ -44,7 +51,20 @@ def cveSearch(var):
     marking_specification.marking_structures.append(tlp)
     handling = Marking()
     handling.add_marking(marking_specification)
-    pkg.stix_header.handling = handling
+    return handling
+
+
+def cveSearch(var):
+    """Search for a CVE ID and return a STIX formatted response"""
+    cve = CVESearch()
+    data = json.loads(cve.id(var))
+
+    set_id_namespace(NAMESPACE)
+
+    pkg = STIXPackage()
+    pkg.stix_header = STIXHeader()
+
+    pkg.stix_header.handling = doMarking()
 
     # Define the exploit target
     et = ExploitTarget()
