@@ -1,0 +1,3 @@
+[STIX]
+ns: http: //example.com
+  ns_prefix: example

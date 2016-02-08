@@ -13,22 +13,30 @@ from stix.exploit_target.vulnerability import CVSSVector
 from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP
-from stix.utils import set_id_namespace
 
 from ares import CVESearch
 import json
 import sys
+from ConfigParser import SafeConfigParser
+import os
 
-NAMESPACE = {"http://avengers.example.com": "avengers"}
+path = os.path.dirname(os.path.abspath(sys.argv[0]))
+parser = SafeConfigParser()
+parser.read(path + '/config.ini')
+
+NS_PREFIX = parser.get('STIX', 'ns_prefix')
+NS = parser.get('STIX', 'ns')
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
+HNDL_ST = "This information may be distributed without restriction."
 
 
 def doMarking():
     """Define the TLP marking and the inheritence."""
     marking_specification = MarkingSpecification()
-    marking_specification.controlled_structure = "../../../../descendant-or-self::node() | ../../../../descendant-or-self::node()/@*"
+    marking_specification.controlled_structure = "../../../../descendant"\
+        "-or-self::node() | ../../../../descendant-or-self::node()/@*"
     simple = SimpleMarkingStructure()
-    simple.statement = "This information may be distributed without restriction."
+    simple.statement = HNDL_ST
     marking_specification.marking_structures.append(simple)
     tlp = TLPMarkingStructure()
     tlp.color = "WHITE"
@@ -38,13 +46,42 @@ def doMarking():
     return handling
 
 
+def doVuln(data):
+    """Do some vulnerability stuff"""
+    vuln = Vulnerability()
+    vuln.cve_id = data['id']
+    vuln.source = NVD_URL + data['id']
+    vuln.title = data['id']
+    vuln.description = data['summary']
+    # The below has issues with python-stix 1.2 (https://github.com/STIXProject
+    # /python-stix/issues/276)
+    # vuln.published_datetime = data['Published']
+    vuln.references = data['references']
+    vuln.is_known = 1
+    # Create the CVSS object and then assign it to the vuln object
+    cvssvec = CVSSVector()
+    cvssvec.overall_score = data['cvss']
+    vuln.cvss_score = cvssvec
+    return vuln
+
+
 def cveSearch(var):
     """Search for a CVE ID and return a STIX formatted response"""
     cve = CVESearch()
     data = json.loads(cve.id(var))
 
-    set_id_namespace(NAMESPACE)
+    try:
+        from stix.utils import set_id_namespace
+        namespace = {NS : NS_PREFIX}
+        set_id_namespace(namespace)
+    except ImportError:
+        from stix.utils import idgen
+        from mixbox.namespaces import Namespace
+        namespace = Namespace(NS, NS_PREFIX, "")
+        idgen.set_id_namespace(namespace)
 
+    pkg = STIXPackage()
+    pkg.stix_header = STIXHeader()
     pkg = STIXPackage()
     pkg.stix_header = STIXHeader()
 
@@ -55,27 +92,8 @@ def cveSearch(var):
     et.title = data['id']
     et.description = data['summary']
 
-    # Do some vulnerability stuff
-    vuln = Vulnerability()
-    vuln.cve_id = data['id']
-    vuln.source = NVD_URL + data['id']
-    vuln.title = data['id']
-    vuln.description = data['summary']
-    # vuln.published_datetime = data['Published']
-    vuln.references = data['references']
-    vuln.is_known = 1
-
-    # Create the CVSS object and then assign it to the vuln object
-    cvssvec = CVSSVector()
-    cvssvec.overall_score = data['cvss']
-    vuln.cvss_score = cvssvec
-
     # Add the vulnerability object to the package object
-    et.add_vulnerability(vuln)
-
-    # Do some COA stuff
-    # coa = PotentialCOAs().PotentialCOA()
-    # print(dir(coa))
+    et.add_vulnerability(doVuln(data))
 
     # Do some TTP stuff with CAPEC objects
     for i in data['capec']:
@@ -88,7 +106,6 @@ def cveSearch(var):
     # Do some weakness stuff
     weak = Weakness()
     weak.cwe_id = data['cwe']
-    # weak.description = i['title']
     et.add_weakness(weak)
 
     # Add the exploit target to the package object
