@@ -72,7 +72,7 @@ def cveSearch(var):
 
     try:
         from stix.utils import set_id_namespace
-        namespace = {NS, NS_PREFIX}
+        namespace = {NS : NS_PREFIX}
         set_id_namespace(namespace)
     except ImportError:
         from stix.utils import idgen
