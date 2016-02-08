@@ -104,5 +104,9 @@ def cveSearch(var):
     return(xml)
 
 if __name__ == '__main__':
-    exploitxml = cveSearch(sys.argv[1])
-    print(exploitxml)
+    # Does a quick check to ensure a variable has been given to the script
+    if len(sys.argv) > 1:
+        exploitxml = cveSearch(sys.argv[1])
+        print(exploitxml)
+    else:
+        print("Please enter a CVE ID to enrich.")
