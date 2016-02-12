@@ -46,7 +46,7 @@ def marking():
     return handling
 
 
-def vuln(data):
+def vulnbuild(data):
     """Do some vulnerability stuff."""
     vuln = Vulnerability()
     vuln.cve_id = data['id']
@@ -93,7 +93,7 @@ def cvebuild(var):
     expt.description = data['summary']
 
     # Add the vulnerability object to the package object
-    expt.add_vulnerability(vuln(data))
+    expt.add_vulnerability(vulnbuild(data))
 
     # Do some TTP stuff with CAPEC objects
     for i in data['capec']:
