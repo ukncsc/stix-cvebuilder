@@ -20,17 +20,17 @@ import sys
 from ConfigParser import SafeConfigParser
 import os
 
-path = os.path.dirname(os.path.abspath(sys.argv[0]))
-parser = SafeConfigParser()
-parser.read(path + '/config.ini')
+PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
+PARSER = SafeConfigParser()
+PARSER.read(PATH + '/config.ini')
 
-NS_PREFIX = parser.get('STIX', 'ns_prefix')
-NS = parser.get('STIX', 'ns')
+NS_PREFIX = PARSER.get('STIX', 'ns_prefix')
+NS = PARSER.get('STIX', 'ns')
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
 HNDL_ST = "This information may be distributed without restriction."
 
 
-def doMarking():
+def marking():
     """Define the TLP marking and the inheritence."""
     marking_specification = MarkingSpecification()
     marking_specification.controlled_structure = "../../../../descendant"\
@@ -46,8 +46,8 @@ def doMarking():
     return handling
 
 
-def doVuln(data):
-    """Do some vulnerability stuff"""
+def vuln(data):
+    """Do some vulnerability stuff."""
     vuln = Vulnerability()
     vuln.cve_id = data['id']
     vuln.source = NVD_URL + data['id']
@@ -65,8 +65,8 @@ def doVuln(data):
     return vuln
 
 
-def cveSearch(var):
-    """Search for a CVE ID and return a STIX formatted response"""
+def cvebuild(var):
+    """Search for a CVE ID and return a STIX formatted response."""
     cve = CVESearch()
     data = json.loads(cve.id(var))
 
@@ -85,31 +85,31 @@ def cveSearch(var):
     pkg = STIXPackage()
     pkg.stix_header = STIXHeader()
 
-    pkg.stix_header.handling = doMarking()
+    pkg.stix_header.handling = marking()
 
     # Define the exploit target
-    et = ExploitTarget()
-    et.title = data['id']
-    et.description = data['summary']
+    expt = ExploitTarget()
+    expt.title = data['id']
+    expt.description = data['summary']
 
     # Add the vulnerability object to the package object
-    et.add_vulnerability(doVuln(data))
+    expt.add_vulnerability(vuln(data))
 
     # Do some TTP stuff with CAPEC objects
     for i in data['capec']:
         ttp = TTP()
         ttp.title = "CAPEC-" + str(i['id'])
         ttp.description = i['summary']
-        ttp.exploit_targets.append(ExploitTarget(idref=et.id_))
+        ttp.exploit_targets.append(ExploitTarget(idref=expt.id_))
         pkg.add_ttp(ttp)
 
     # Do some weakness stuff
     weak = Weakness()
     weak.cwe_id = data['cwe']
-    et.add_weakness(weak)
+    expt.add_weakness(weak)
 
     # Add the exploit target to the package object
-    pkg.add_exploit_target(et)
+    pkg.add_exploit_target(expt)
 
     xml = pkg.to_xml()
 
@@ -118,12 +118,12 @@ def cveSearch(var):
         title = pkg.id_.split(':', 1)[-1]
         with open(title + ".xml", "w") as text_file:
             text_file.write(xml)
-    return(xml)
+    return xml
 
 if __name__ == '__main__':
     # Does a quick check to ensure a variable has been given to the script
     if len(sys.argv) > 1:
-        exploitxml = cveSearch(sys.argv[1])
-        print(exploitxml)
+        EXPLOITXML = cvebuild(sys.argv[1])
+        print(EXPLOITXML)
     else:
         print("Please enter a CVE ID to enrich.")
