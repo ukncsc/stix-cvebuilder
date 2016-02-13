@@ -22,6 +22,9 @@ print(cveSearch)
 
 ```
 
+## Example Output
+An example output can be found in the [Example](Example-Package-7cbc9064-8662-4fca-8b1e-4bdc3d32e0a7.xml) file. This example uses CVE-2015-5119.
+
 ## Dependencies
 The following python libraries are required and can be installed with pip.
 * ares (https://github.com/mrsmn/ares)
