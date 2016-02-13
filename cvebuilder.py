@@ -1,4 +1,6 @@
 """
+Builds a STIX Exploit Target from a CVE number.
+
 The script will look at the first parameter as the CVE number and uses
 the ares module (https://github.com/mrsmn/ares), to provide data from
 https://cve.circl.lu/. This provides a quick and easy method of prototyping
