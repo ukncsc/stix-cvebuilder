@@ -71,56 +71,61 @@ def cvebuild(var):
     """Search for a CVE ID and return a STIX formatted response."""
     cve = CVESearch()
     data = json.loads(cve.id(var))
+    if data:
+        try:
+            from stix.utils import set_id_namespace
+            namespace = {NS: NS_PREFIX}
+            set_id_namespace(namespace)
+        except ImportError:
+            from stix.utils import idgen
+            from mixbox.namespaces import Namespace
+            namespace = Namespace(NS, NS_PREFIX, "")
+            idgen.set_id_namespace(namespace)
 
-    try:
-        from stix.utils import set_id_namespace
-        namespace = {NS: NS_PREFIX}
-        set_id_namespace(namespace)
-    except ImportError:
-        from stix.utils import idgen
-        from mixbox.namespaces import Namespace
-        namespace = Namespace(NS, NS_PREFIX, "")
-        idgen.set_id_namespace(namespace)
+        pkg = STIXPackage()
+        pkg.stix_header = STIXHeader()
+        pkg = STIXPackage()
+        pkg.stix_header = STIXHeader()
 
-    pkg = STIXPackage()
-    pkg.stix_header = STIXHeader()
-    pkg = STIXPackage()
-    pkg.stix_header = STIXHeader()
+        pkg.stix_header.handling = marking()
 
-    pkg.stix_header.handling = marking()
+        # Define the exploit target
+        expt = ExploitTarget()
+        expt.title = data['id']
+        expt.description = data['summary']
 
-    # Define the exploit target
-    expt = ExploitTarget()
-    expt.title = data['id']
-    expt.description = data['summary']
+        # Add the vulnerability object to the package object
+        expt.add_vulnerability(vulnbuild(data))
 
-    # Add the vulnerability object to the package object
-    expt.add_vulnerability(vulnbuild(data))
+        # Do some TTP stuff with CAPEC objects
+        try:
+            for i in data['capec']:
+                ttp = TTP()
+                ttp.title = "CAPEC-" + str(i['id'])
+                ttp.description = i['summary']
+                ttp.exploit_targets.append(ExploitTarget(idref=expt.id_))
+                pkg.add_ttp(ttp)
+        except KeyError:
+            pass
 
-    # Do some TTP stuff with CAPEC objects
-    for i in data['capec']:
-        ttp = TTP()
-        ttp.title = "CAPEC-" + str(i['id'])
-        ttp.description = i['summary']
-        ttp.exploit_targets.append(ExploitTarget(idref=expt.id_))
-        pkg.add_ttp(ttp)
+        # Do some weakness stuff
+        if data['cwe'] != 'Unknown':
+            weak = Weakness()
+            weak.cwe_id = data['cwe']
+            expt.add_weakness(weak)
 
-    # Do some weakness stuff
-    weak = Weakness()
-    weak.cwe_id = data['cwe']
-    expt.add_weakness(weak)
+        # Add the exploit target to the package object
+        pkg.add_exploit_target(expt)
 
-    # Add the exploit target to the package object
-    pkg.add_exploit_target(expt)
+        xml = pkg.to_xml()
 
-    xml = pkg.to_xml()
+        # If the function is not imported then output the xml to a file.
+        if __name__ == '__main__':
+            title = pkg.id_.split(':', 1)[-1]
+            with open(title + ".xml", "w") as text_file:
+                text_file.write(xml)
+        return xml
 
-    # If the function is not imported then output the xml to a file.
-    if __name__ == '__main__':
-        title = pkg.id_.split(':', 1)[-1]
-        with open(title + ".xml", "w") as text_file:
-            text_file.write(xml)
-    return xml
 
 if __name__ == '__main__':
     # Does a quick check to ensure a variable has been given to the script
