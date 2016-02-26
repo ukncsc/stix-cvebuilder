@@ -1,5 +1,5 @@
 # CVE-Builder
-[![Code Health](https://landscape.io/github/cwtaylor/cve-builder/master/landscape.svg?style=flat)](https://landscape.io/github/cwtaylor/cve-builder/master)
+[![Code Health](https://landscape.io/github/certuk/cve-builder/master/landscape.svg?style=flat)](https://landscape.io/github/certuk/cve-builder/master)
 
 CVE Builder script that generates STIX formatted Exploit Targets.
 
