@@ -22,18 +22,18 @@ from stix.common.related import GenericRelationshipList, RelatedCOA
 from ares import CVESearch
 import json
 import sys
-from ConfigParser import SafeConfigParser
 import os
 
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
-PARSER = SafeConfigParser()
-PARSER.read(PATH + '/config.ini')
 
-NS_PREFIX = PARSER.get('STIX', 'ns_prefix')
-NS = PARSER.get('STIX', 'ns')
+with open(PATH + '/config.json') as data_file:
+    data = json.load(data_file)
+
+NS_PREFIX = data['stix'][0]['ns_prefix']
+NS = data['stix'][0]['ns']
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
 HNDL_ST = "This information may be distributed without restriction."
-COA = PARSER.get('COA', 'coa1')
+COAS = data['coas']
 
 
 def marking():
@@ -50,11 +50,6 @@ def marking():
     handling = Marking()
     handling.add_marking(marking_specification)
     return handling
-
-
-def coabuild(coaid):
-
-    return coa
 
 
 def vulnbuild(data):
@@ -109,7 +104,8 @@ def cvebuild(var):
         expt.add_vulnerability(vulnbuild(data))
 
         # Add the COA object to the ET object
-        expt.potential_coas.append(CourseOfAction(idref=COA))
+        for coa in COAS:
+            expt.potential_coas.append(CourseOfAction(idref=coa['id']))
 
         # Do some TTP stuff with CAPEC objects
         try:

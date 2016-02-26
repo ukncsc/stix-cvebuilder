@@ -1,6 +1,6 @@
 #
 .DS_Store
-*.ini
+*.json
 Package*.xml
 
 # Byte-compiled / optimized / DLL files
