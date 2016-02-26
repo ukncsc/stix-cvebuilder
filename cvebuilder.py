@@ -10,12 +10,14 @@ STIX package.
 
 from stix.core import STIXPackage, STIXHeader
 from stix.data_marking import Marking, MarkingSpecification
-from stix.exploit_target import ExploitTarget, Vulnerability, Weakness
+from stix.exploit_target import ExploitTarget, Vulnerability, Weakness, PotentialCOAs
 from stix.exploit_target.vulnerability import CVSSVector
 from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
+from stix.coa import CourseOfAction
 from stix.ttp import TTP
-from stix.common import InformationSource, Identity
+from stix.common import InformationSource, Identity, RelatedCOA
+from stix.common.related import GenericRelationshipList, RelatedCOA
 
 from ares import CVESearch
 import json
@@ -31,6 +33,7 @@ NS_PREFIX = PARSER.get('STIX', 'ns_prefix')
 NS = PARSER.get('STIX', 'ns')
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
 HNDL_ST = "This information may be distributed without restriction."
+COA = PARSER.get('COA', 'coa1')
 
 
 def marking():
@@ -47,6 +50,11 @@ def marking():
     handling = Marking()
     handling.add_marking(marking_specification)
     return handling
+
+
+def coabuild(coaid):
+
+    return coa
 
 
 def vulnbuild(data):
@@ -94,10 +102,14 @@ def cvebuild(var):
         expt = ExploitTarget()
         expt.title = data['id']
         expt.description = data['summary']
-        expt.information_source = InformationSource(identity=Identity(name="National Vulnerability Database"))
+        expt.information_source = InformationSource(
+            identity=Identity(name="National Vulnerability Database"))
 
         # Add the vulnerability object to the package object
         expt.add_vulnerability(vulnbuild(data))
+
+        # Add the COA object to the ET object
+        expt.potential_coas.append(CourseOfAction(idref=COA))
 
         # Do some TTP stuff with CAPEC objects
         try:
