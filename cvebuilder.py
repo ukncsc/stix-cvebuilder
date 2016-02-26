@@ -15,6 +15,7 @@ from stix.exploit_target.vulnerability import CVSSVector
 from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP
+from stix.common import InformationSource, Identity
 
 from ares import CVESearch
 import json
@@ -93,6 +94,7 @@ def cvebuild(var):
         expt = ExploitTarget()
         expt.title = data['id']
         expt.description = data['summary']
+        expt.information_source = InformationSource(identity=Identity(name="National Vulnerability Database"))
 
         # Add the vulnerability object to the package object
         expt.add_vulnerability(vulnbuild(data))
