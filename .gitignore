@@ -1,6 +1,5 @@
 #
 .DS_Store
-*.xml
 *.ini
 
 # Byte-compiled / optimized / DLL files
