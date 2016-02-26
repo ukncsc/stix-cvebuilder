@@ -98,7 +98,7 @@ def cveSearch(var):
     # Do some TTP stuff with CAPEC objects
     for i in data['capec']:
         ttp = TTP()
-        ttp.title = "CAPEC-" + str(i['id'])
+        ttp.title = i['name']
         ttp.description = i['summary']
         ttp.exploit_targets.append(ExploitTarget(idref=et.id_))
         pkg.add_ttp(ttp)
