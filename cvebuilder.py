@@ -105,7 +105,7 @@ def cvebuild(var):
 
         # Add the COA object to the ET object
         for coa in COAS:
-            expt.potential_coas.append(CourseOfAction(idref=coa['id']))
+            expt.potential_coas.append(CourseOfAction(idref=coa['id'], timestamp=expt.timestamp))
 
         # Do some TTP stuff with CAPEC objects
         try:
