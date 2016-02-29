@@ -7,6 +7,27 @@ The script will look at the first parameter as the CVE number and uses the ares 
 
 Full warning this script is still a work in progress and is by no means a one stop shop to build a fully featured exploit target in STIX. Your own mileage may vary.
 
+## Setup
+Before using the script you will need setup the config file with your own settings:
+
+1. Make a copy of the `config.json.template` file and rename it to `config.json`.
+2. Enter your own settings inside your `config.json` file.
+  * The `coas` key defines any COAs you would like to relate to your ET object.
+
+Once setup your file should look like this:
+```JSON
+{
+  "stix": [{
+    "ns": "http://avengers.com",
+    "ns_prefix": "avengers"
+  }],
+  "coas": [{
+    "id": "avengers:coa-0c6e0337-18bc-4f58-a712-5fd743565180"
+  }]
+}
+```
+
+
 ## Usage
 From a terminal/command prompt you can use the following to print the STIX and save it as a file.
 ```
