@@ -11,15 +11,14 @@ STIX package.
 from stix.core import STIXPackage, STIXHeader
 from stix.data_marking import Marking, MarkingSpecification
 from stix.exploit_target import (
-    ExploitTarget, Vulnerability, Weakness, PotentialCOAs
+    ExploitTarget, Vulnerability, Weakness
     )
 from stix.exploit_target.vulnerability import CVSSVector
 from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.coa import CourseOfAction
 from stix.ttp import TTP
-from stix.common import InformationSource, Identity, RelatedCOA
-from stix.common.related import GenericRelationshipList, RelatedCOA
+from stix.common import InformationSource, Identity
 
 from ares import CVESearch
 import json
@@ -29,13 +28,13 @@ import os
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 
 with open(PATH + '/config.json') as data_file:
-    data = json.load(data_file)
+    CONFIG = json.load(data_file)
 
-NS_PREFIX = data['stix'][0]['ns_prefix']
-NS = data['stix'][0]['ns']
+NS_PREFIX = CONFIG['stix'][0]['ns_prefix']
+NS = CONFIG['stix'][0]['ns']
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
 HNDL_ST = "This information may be distributed without restriction."
-COAS = data['coas']
+COAS = CONFIG['coas']
 
 
 def marking():
@@ -55,7 +54,7 @@ def marking():
 
 
 def weakbuild(data):
-    # Do some weakness stuff
+    """Define the weaknessses"""
     if data['cwe'] != 'Unknown':
         weak = Weakness()
         weak.cwe_id = data['cwe']
