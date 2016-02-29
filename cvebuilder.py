@@ -54,7 +54,7 @@ def marking():
 
 
 def weakbuild(data):
-    """Define the weaknessses"""
+    """Define the weaknessses."""
     if data['cwe'] != 'Unknown':
         weak = Weakness()
         weak.cwe_id = data['cwe']
