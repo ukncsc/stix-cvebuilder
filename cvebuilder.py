@@ -67,8 +67,8 @@ def vulnbuild(data):
     vuln.source = NVD_URL + data['id']
     vuln.title = data['id']
     vuln.description = data['summary']
-    # The below has issues with python-stix 1.2 and below (https://github.com/STIXProject
-    # /python-stix/issues/276)
+    # The below has issues with python-stix 1.2 and below
+    # (https://github.com/STIXProject/python-stix/issues/276)
     # vuln.published_datetime = data['Published']
     vuln.references = data['references']
     vuln.is_known = 1
@@ -123,6 +123,8 @@ def cvebuild(var):
             for i in data['capec']:
                 ttp = TTP()
                 ttp.title = str(i['name'])
+                # The summary key is a list. In 1.2 this is represented
+                # properly using description ordinality.
                 ttp.description = str(i['summary'])
                 attack_pattern = AttackPattern()
                 attack_pattern.capec_id = "CAPEC-" + str(i['id'])
