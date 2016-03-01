@@ -40,14 +40,14 @@ COAS = CONFIG['coas']
 def marking():
     """Define the TLP marking and the inheritence."""
     marking_specification = MarkingSpecification()
+    tlp = TLPMarkingStructure()
+    tlp.color = "WHITE"
+    marking_specification.marking_structures.append(tlp)
     marking_specification.controlled_structure = "../../../../descendant"\
         "-or-self::node() | ../../../../descendant-or-self::node()/@*"
     simple = SimpleMarkingStructure()
     simple.statement = HNDL_ST
     marking_specification.marking_structures.append(simple)
-    tlp = TLPMarkingStructure()
-    tlp.color = "WHITE"
-    marking_specification.marking_structures.append(tlp)
     handling = Marking()
     handling.add_marking(marking_specification)
     return handling
