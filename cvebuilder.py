@@ -8,17 +8,16 @@ the core information from publicly available CVE information into a
 STIX package.
 """
 
+from stix.coa import CourseOfAction
+from stix.common import InformationSource, Identity
 from stix.core import STIXPackage, STIXHeader
 from stix.data_marking import Marking, MarkingSpecification
-from stix.exploit_target import (
-    ExploitTarget, Vulnerability, Weakness
-    )
+from stix.exploit_target import ExploitTarget, Vulnerability, Weakness
 from stix.exploit_target.vulnerability import CVSSVector
 from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
-from stix.coa import CourseOfAction
-from stix.ttp import TTP
-from stix.common import InformationSource, Identity
+from stix.ttp import TTP, Behavior
+from stix.ttp.behavior import AttackPattern
 
 from ares import CVESearch
 import json
@@ -125,6 +124,10 @@ def cvebuild(var):
                 ttp = TTP()
                 ttp.title = "CAPEC-" + str(i['id'])
                 ttp.description = i['summary']
+                attack_pattern = AttackPattern()
+                attack_pattern.capec_id = "CAPEC-" + str(i['id'])
+                ttp.behavior = Behavior()
+                ttp.behavior.add_attack_pattern(attack_pattern)
                 ttp.exploit_targets.append(ExploitTarget(idref=expt.id_))
                 pkg.add_ttp(ttp)
         except KeyError:
