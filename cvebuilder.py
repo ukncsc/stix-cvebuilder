@@ -60,6 +60,21 @@ def weakbuild(data):
         return weak
 
 
+def buildttp(i, expt):
+    """Do some TTP Stuff"""
+    ttp = TTP()
+    ttp.title = str(i['name'])
+    # The summary key is a list. In 1.2 this is represented
+    # properly using description ordinality.
+    ttp.description = str(i['summary'])
+    attack_pattern = AttackPattern()
+    attack_pattern.capec_id = "CAPEC-" + str(i['id'])
+    ttp.behavior = Behavior()
+    ttp.behavior.add_attack_pattern(attack_pattern)
+    ttp.exploit_targets.append(ExploitTarget(idref=expt.id_))
+    return ttp
+
+
 def vulnbuild(data):
     """Do some vulnerability stuff."""
     vuln = Vulnerability()
@@ -121,17 +136,7 @@ def cvebuild(var):
         # Do some TTP stuff with CAPEC objects
         try:
             for i in data['capec']:
-                ttp = TTP()
-                ttp.title = str(i['name'])
-                # The summary key is a list. In 1.2 this is represented
-                # properly using description ordinality.
-                ttp.description = str(i['summary'])
-                attack_pattern = AttackPattern()
-                attack_pattern.capec_id = "CAPEC-" + str(i['id'])
-                ttp.behavior = Behavior()
-                ttp.behavior.add_attack_pattern(attack_pattern)
-                ttp.exploit_targets.append(ExploitTarget(idref=expt.id_))
-                pkg.add_ttp(ttp)
+                pkg.add_ttp(buildttp(i, expt))
         except KeyError:
             pass
 
