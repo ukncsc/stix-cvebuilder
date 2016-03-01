@@ -61,7 +61,7 @@ def weakbuild(data):
 
 
 def buildttp(i, expt):
-    """Do some TTP Stuff"""
+    """Do some TTP stuff."""
     ttp = TTP()
     ttp.title = str(i['name'])
     # The summary key is a list. In 1.2 this is represented
