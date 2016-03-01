@@ -66,7 +66,7 @@ def buildttp(i, expt):
     ttp.title = str(i['name'])
     # The summary key is a list. In 1.2 this is represented
     # properly using description ordinality.
-    ttp.description = str(i['summary'])
+    ttp.description = i['summary']
     attack_pattern = AttackPattern()
     attack_pattern.capec_id = "CAPEC-" + str(i['id'])
     ttp.behavior = Behavior()
