@@ -122,8 +122,8 @@ def cvebuild(var):
         try:
             for i in data['capec']:
                 ttp = TTP()
-                ttp.title = "CAPEC-" + str(i['id'])
-                ttp.description = i['summary']
+                ttp.title = str(i['name'])
+                ttp.description = str(i['summary'])
                 attack_pattern = AttackPattern()
                 attack_pattern.capec_id = "CAPEC-" + str(i['id'])
                 ttp.behavior = Behavior()
