@@ -68,7 +68,7 @@ def vulnbuild(data):
     vuln.source = NVD_URL + data['id']
     vuln.title = data['id']
     vuln.description = data['summary']
-    # The below has issues with python-stix 1.2 (https://github.com/STIXProject
+    # The below has issues with python-stix 1.2 and below (https://github.com/STIXProject
     # /python-stix/issues/276)
     # vuln.published_datetime = data['Published']
     vuln.references = data['references']
