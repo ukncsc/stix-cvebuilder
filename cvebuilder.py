@@ -39,7 +39,7 @@ COAS = CONFIG['coas']
 
 
 def marking():
-    """Define the TLP marking and the inheritence."""
+    """Define the TLP marking and the inheritance."""
     marking_specification = MarkingSpecification()
     tlp = TLPMarkingStructure()
     tlp.color = "WHITE"
@@ -55,7 +55,7 @@ def marking():
 
 
 def weakbuild(data):
-    """Define the weaknessses."""
+    """Define the weaknesses."""
     if data['cwe'] != 'Unknown':
         weak = Weakness()
         weak.cwe_id = data['cwe']
@@ -89,7 +89,7 @@ def vulnbuild(data):
     # vuln.published_datetime = data['Published']
     vuln.references = data['references']
     vuln.is_known = 1
-    # Create the CVSS object and then assign it to the vuln object
+    # Create the CVSS object and then assign it to the vulnerability object
     cvssvec = CVSSVector()
     cvssvec.overall_score = data['cvss']
     vuln.cvss_score = cvssvec
