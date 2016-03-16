@@ -8,6 +8,10 @@ the core information from publicly available CVE information into a
 STIX package.
 """
 
+import json
+import sys
+import os
+from ares import CVESearch
 from stix.coa import CourseOfAction
 from stix.common import InformationSource, Identity
 from stix.core import STIXPackage, STIXHeader
@@ -19,10 +23,8 @@ from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
 
-from ares import CVESearch
-import json
-import sys
-import os
+
+
 
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 
