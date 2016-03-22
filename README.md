@@ -31,8 +31,10 @@ Once setup your file should look like this:
 ## Usage
 From a terminal/command prompt you can use the following to print the STIX and save it as a file.
 ```
-$ python cve-builder CVE-2015-5119
+$ python cve-builder.py --ttp 1 CVE-2015-5119
 ```
+
+The optional `--ttp` flag designates if TTPs will be included in the package. By default this is set to 0 (off).
 
 Or you can use it as a module within your own script.
 ```python

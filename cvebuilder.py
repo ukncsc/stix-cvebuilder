@@ -8,6 +8,7 @@ the core information from publicly available CVE information into a
 STIX package.
 """
 
+import argparse
 import json
 import sys
 import os
@@ -22,7 +23,6 @@ from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
-
 
 
 
@@ -99,7 +99,7 @@ def vulnbuild(data):
 def cvebuild(var):
     """Search for a CVE ID and return a STIX formatted response."""
     cve = CVESearch()
-    data = json.loads(cve.id(var))
+    data = json.loads(cve.id(var.cve))
     if data:
         try:
             from stix.utils import set_id_namespace
@@ -136,11 +136,12 @@ def cvebuild(var):
                     timestamp=expt.timestamp))
 
         # Do some TTP stuff with CAPEC objects
-        try:
-            for i in data['capec']:
-                pkg.add_ttp(buildttp(i, expt))
-        except KeyError:
-            pass
+        if var.ttp == "1":
+            try:
+                for i in data['capec']:
+                    pkg.add_ttp(buildttp(i, expt))
+            except KeyError:
+                pass
 
         expt.add_weakness(weakbuild(data))
 
@@ -158,8 +159,12 @@ def cvebuild(var):
 
 if __name__ == '__main__':
     # Does a quick check to ensure a variable has been given to the script
+    parser = argparse.ArgumentParser()
+    parser.add_argument("cve", help="The CVE number you want to lookup")
+    parser.add_argument("--ttp", default=0, help="Turn TTP generation on/off")
+    arguments = parser.parse_args()
     if len(sys.argv) > 1:
-        EXPLOITXML = cvebuild(sys.argv[1])
+        EXPLOITXML = cvebuild(arguments)
         print(EXPLOITXML)
     else:
         print("Please enter a CVE ID to enrich.")
