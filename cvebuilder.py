@@ -8,7 +8,6 @@ the core information from publicly available CVE information into a
 STIX package.
 """
 
-import argparse
 import json
 import sys
 import os
@@ -137,7 +136,7 @@ def cvebuild(var):
                     timestamp=expt.timestamp))
 
         # Do some TTP stuff with CAPEC objects
-        if TTPON == True:
+        if TTPON is True:
             try:
                 for i in data['capec']:
                     pkg.add_ttp(buildttp(i, expt))
@@ -162,6 +161,6 @@ if __name__ == '__main__':
     # Does a quick check to ensure a variable has been given to the script
     if len(sys.argv) > 1:
         EXPLOITXML = cvebuild(sys.argv[1])
-        print(EXPLOITXML)
+        print EXPLOITXML
     else:
-        print("Please enter a CVE ID to enrich.")
+        print "Please enter a CVE ID to enrich."
