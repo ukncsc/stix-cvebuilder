@@ -28,7 +28,7 @@ from stix.ttp.behavior import AttackPattern
 
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 
-with open(PATH + '/config.json') as data_file:
+with open('config.json') as data_file:
     CONFIG = json.load(data_file)
 
 NS_PREFIX = CONFIG['stix'][0]['ns_prefix']
@@ -99,7 +99,10 @@ def vulnbuild(data):
 def cvebuild(var):
     """Search for a CVE ID and return a STIX formatted response."""
     cve = CVESearch()
-    data = json.loads(cve.id(var.cve))
+    if __name__ == '__main__':
+        data = json.loads(cve.id(var.cve))
+    else:
+        data = json.loads(cve.id(var))
     if data:
         try:
             from stix.utils import set_id_namespace
@@ -136,12 +139,15 @@ def cvebuild(var):
                     timestamp=expt.timestamp))
 
         # Do some TTP stuff with CAPEC objects
-        if var.ttp == "1":
-            try:
-                for i in data['capec']:
-                    pkg.add_ttp(buildttp(i, expt))
-            except KeyError:
-                pass
+        try:
+            if (var.ttp):
+                try:
+                    for i in data['capec']:
+                        pkg.add_ttp(buildttp(i, expt))
+                except KeyError:
+                    pass
+        except:
+            pass
 
         expt.add_weakness(weakbuild(data))
 
@@ -161,7 +167,7 @@ if __name__ == '__main__':
     # Does a quick check to ensure a variable has been given to the script
     parser = argparse.ArgumentParser()
     parser.add_argument("cve", help="The CVE number you want to lookup")
-    parser.add_argument("--ttp", default=0, help="Turn TTP generation on/off")
+    parser.add_argument("--ttp", action="store_true", help="Turn TTP generation on/off")
     arguments = parser.parse_args()
     if len(sys.argv) > 1:
         EXPLOITXML = cvebuild(arguments)
