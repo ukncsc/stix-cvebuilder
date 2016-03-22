@@ -36,6 +36,7 @@ NS = CONFIG['stix'][0]['ns']
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
 HNDL_ST = "This information may be distributed without restriction."
 COAS = CONFIG['coas']
+TTPON = CONFIG['ttp']
 
 
 def marking():
@@ -99,10 +100,7 @@ def vulnbuild(data):
 def cvebuild(var):
     """Search for a CVE ID and return a STIX formatted response."""
     cve = CVESearch()
-    if __name__ == '__main__':
-        data = json.loads(cve.id(var.cve))
-    else:
-        data = json.loads(cve.id(var))
+    data = json.loads(cve.id(var))
     if data:
         try:
             from stix.utils import set_id_namespace
@@ -139,15 +137,12 @@ def cvebuild(var):
                     timestamp=expt.timestamp))
 
         # Do some TTP stuff with CAPEC objects
-        try:
-            if (var.ttp):
-                try:
-                    for i in data['capec']:
-                        pkg.add_ttp(buildttp(i, expt))
-                except KeyError:
-                    pass
-        except:
-            pass
+        if TTPON == True:
+            try:
+                for i in data['capec']:
+                    pkg.add_ttp(buildttp(i, expt))
+            except KeyError:
+                pass
 
         expt.add_weakness(weakbuild(data))
 
@@ -165,12 +160,8 @@ def cvebuild(var):
 
 if __name__ == '__main__':
     # Does a quick check to ensure a variable has been given to the script
-    parser = argparse.ArgumentParser()
-    parser.add_argument("cve", help="The CVE number you want to lookup")
-    parser.add_argument("--ttp", action="store_true", help="Turn TTP generation on/off")
-    arguments = parser.parse_args()
     if len(sys.argv) > 1:
-        EXPLOITXML = cvebuild(arguments)
+        EXPLOITXML = cvebuild(sys.argv[1])
         print(EXPLOITXML)
     else:
         print("Please enter a CVE ID to enrich.")
