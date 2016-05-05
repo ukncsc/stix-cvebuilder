@@ -96,6 +96,18 @@ def vulnbuild(data):
     return vuln
 
 
+def lastcve(var):
+    """Grabs the last 30 CVEs"""
+    cve = CVESearch()
+    data = json.loads(cve.last())
+    if data:
+        try:
+            for ob in data['results']:
+                cvebuild(ob['id'])
+        except ImportError:
+            pass
+
+
 def cvebuild(var):
     """Search for a CVE ID and return a STIX formatted response."""
     cve = CVESearch()
@@ -160,6 +172,7 @@ def cvebuild(var):
 parser = argparse.ArgumentParser(
     description='Search for a CVE ID and return a STIX formatted response.')
 parser.add_argument('-i', '--id', type=cvebuild, help='Some help fella')
+parser.add_argument('-l', '--last', type=lastcve, help='Some help fella')
 args = parser.parse_args()
 
 # if __name__ == '__main__':
