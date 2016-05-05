@@ -8,6 +8,7 @@ the core information from publicly available CVE information into a
 STIX package.
 """
 
+import argparse
 import json
 import sys
 import os
@@ -22,7 +23,6 @@ from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
-
 
 
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -157,10 +157,15 @@ def cvebuild(var):
                 text_file.write(xml)
         return xml
 
-if __name__ == '__main__':
-    # Does a quick check to ensure a variable has been given to the script
-    if len(sys.argv) > 1:
-        EXPLOITXML = cvebuild(sys.argv[1])
-        print(EXPLOITXML)
-    else:
-        print("Please enter a CVE ID to enrich.")
+parser = argparse.ArgumentParser(
+    description='Search for a CVE ID and return a STIX formatted response.')
+parser.add_argument('-i', '--id', type=cvebuild, help='Some help fella')
+args = parser.parse_args()
+
+# if __name__ == '__main__':
+#     # Does a quick check to ensure a variable has been given to the script
+#     if len(sys.argv) > 1:
+#         EXPLOITXML = cvebuild(sys.argv[1])
+#         print(EXPLOITXML)
+#     else:
+#         print("Please enter a CVE ID to enrich.")
