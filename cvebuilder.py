@@ -8,6 +8,10 @@ the core information from publicly available CVE information into a
 STIX package.
 """
 
+import json
+import sys
+import os
+from ares import CVESearch
 from stix.coa import CourseOfAction
 from stix.common import InformationSource, Identity
 from stix.core import STIXPackage, STIXHeader
@@ -19,14 +23,11 @@ from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
 
-from ares import CVESearch
-import json
-import sys
-import os
+
 
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 
-with open(PATH + '/config.json') as data_file:
+with open('config.json') as data_file:
     CONFIG = json.load(data_file)
 
 NS_PREFIX = CONFIG['stix'][0]['ns_prefix']
@@ -34,10 +35,11 @@ NS = CONFIG['stix'][0]['ns']
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
 HNDL_ST = "This information may be distributed without restriction."
 COAS = CONFIG['coas']
+TTPON = CONFIG['ttp']
 
 
 def marking():
-    """Define the TLP marking and the inheritence."""
+    """Define the TLP marking and the inheritance."""
     marking_specification = MarkingSpecification()
     tlp = TLPMarkingStructure()
     tlp.color = "WHITE"
@@ -53,7 +55,7 @@ def marking():
 
 
 def weakbuild(data):
-    """Define the weaknessses."""
+    """Define the weaknesses."""
     if data['cwe'] != 'Unknown':
         weak = Weakness()
         weak.cwe_id = data['cwe']
@@ -66,7 +68,7 @@ def buildttp(i, expt):
     ttp.title = str(i['name'])
     # The summary key is a list. In 1.2 this is represented
     # properly using description ordinality.
-    ttp.description = str(i['summary'])
+    ttp.description = i['summary']
     attack_pattern = AttackPattern()
     attack_pattern.capec_id = "CAPEC-" + str(i['id'])
     ttp.behavior = Behavior()
@@ -87,7 +89,7 @@ def vulnbuild(data):
     # vuln.published_datetime = data['Published']
     vuln.references = data['references']
     vuln.is_known = 1
-    # Create the CVSS object and then assign it to the vuln object
+    # Create the CVSS object and then assign it to the vulnerability object
     cvssvec = CVSSVector()
     cvssvec.overall_score = data['cvss']
     vuln.cvss_score = cvssvec
@@ -134,11 +136,12 @@ def cvebuild(var):
                     timestamp=expt.timestamp))
 
         # Do some TTP stuff with CAPEC objects
-        try:
-            for i in data['capec']:
-                pkg.add_ttp(buildttp(i, expt))
-        except KeyError:
-            pass
+        if TTPON is True:
+            try:
+                for i in data['capec']:
+                    pkg.add_ttp(buildttp(i, expt))
+            except KeyError:
+                pass
 
         expt.add_weakness(weakbuild(data))
 

@@ -13,6 +13,7 @@ Before using the script you will need setup the config file with your own settin
 1. Make a copy of the `config.json.template` file and rename it to `config.json`.
 2. Enter your own settings inside your `config.json` file.
   * The `coas` key defines any COAs you would like to relate to your ET object.
+  * The `ttp` key defines if you want TTP objects to be built as part of the package.
 
 Once setup your file should look like this:
 ```JSON
@@ -31,8 +32,9 @@ Once setup your file should look like this:
 ## Usage
 From a terminal/command prompt you can use the following to print the STIX and save it as a file.
 ```
-$ python cve-builder CVE-2015-5119
+$ python cve-builder.py CVE-2015-5119
 ```
+
 
 Or you can use it as a module within your own script.
 ```python

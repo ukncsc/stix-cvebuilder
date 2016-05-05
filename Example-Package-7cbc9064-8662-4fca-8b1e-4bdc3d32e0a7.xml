@@ -1,9 +1,10 @@
-<stix:STIX_Package 
+<stix:STIX_Package
+	xmlns:certuk="http://www.cert.gov.uk"
+	xmlns:coa="http://stix.mitre.org/CourseOfAction-1"
 	xmlns:cybox="http://cybox.mitre.org/cybox-2"
 	xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
 	xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
 	xmlns:et="http://stix.mitre.org/ExploitTarget-1"
-	xmlns:example="http: //example.com"
 	xmlns:marking="http://data-marking.mitre.org/Marking-1"
 	xmlns:simpleMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
 	xmlns:stix="http://stix.mitre.org/stix-1"
@@ -11,121 +12,176 @@
 	xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
 	xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
 	xmlns:ttp="http://stix.mitre.org/TTP-1"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="example:Package-7cbc9064-8662-4fca-8b1e-4bdc3d32e0a7" version="1.2">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="certuk:Package-b31bc348-12f5-4c42-9368-e5bf8965ceff" version="1.2">
     <stix:STIX_Header>
         <stix:Handling>
             <marking:Marking>
                 <marking:Controlled_Structure>../../../../descendant-or-self::node() | ../../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type='tlpMarking:TLPMarkingStructureType' color="WHITE"/>
                 <marking:Marking_Structure xsi:type='simpleMarking:SimpleMarkingStructureType'>
                     <simpleMarking:Statement>This information may be distributed without restriction.</simpleMarking:Statement>
                 </marking:Marking_Structure>
-                <marking:Marking_Structure xsi:type='tlpMarking:TLPMarkingStructureType' color="WHITE"/>
             </marking:Marking>
         </stix:Handling>
     </stix:STIX_Header>
     <stix:TTPs>
-        <stix:TTP id="example:ttp-6a6dfee8-f5cf-4f34-aec4-03fd7ba43bb0" timestamp="2016-02-13T08:52:40.270854+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-24</ttp:Title>
+        <stix:TTP id="certuk:ttp-9b2c994b-c334-43b3-9b10-ef4f9624a1af" timestamp="2016-03-01T10:20:54.788909+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Filter Failure through Buffer Overflow</ttp:Title>
             <ttp:Description>In this attack, the idea is to cause an active filter to fail by causing an oversized transaction. An attacker may try to feed overly long input strings to the program in an attempt to overwhelm the filter (by causing a buffer overflow) and hoping that the filter does not fail securely (i.e. the user input is let into the system unfiltered).</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-24"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
-        <stix:TTP id="example:ttp-0c6e0337-18bc-4f58-a712-5fd743565180" timestamp="2016-02-13T08:52:40.271288+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-42</ttp:Title>
+        <stix:TTP id="certuk:ttp-6b1ebbcb-6a04-480e-aac4-51bb3d0c5771" timestamp="2016-03-01T10:20:54.789811+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>MIME Conversion</ttp:Title>
             <ttp:Description>An attacker exploits a weakness in the MIME conversion routine to cause a buffer overflow and gain control over the mail server machine. The MIME system is designed to allow various different information formats to be interpreted and sent via e-mail. Attack points exist when data are converted to MIME compatible format and back.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-42"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
-        <stix:TTP id="example:ttp-5d0c2199-0109-40b3-8644-0420ac9f7d5e" timestamp="2016-02-13T08:52:40.271644+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-44</ttp:Title>
+        <stix:TTP id="certuk:ttp-5d8a361c-b1e0-4930-8e26-e2ff8365fc6d" timestamp="2016-03-01T10:20:54.790399+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Overflow Binary Resource File</ttp:Title>
             <ttp:Description>An attack of this type exploits a buffer overflow vulnerability in the handling of binary resources. Binary resources may include music files like MP3, image files like JPEG files, and any other binary file. These attacks may pass unnoticed to the client machine through normal usage of files, such as a browser loading a seemingly innocent JPEG file. This can allow the attacker access to the execution stack and execute arbitrary code in the target process. This attack pattern is a variant of standard buffer overflow attacks using an unexpected vector (binary files) to wrap its attack and open up a new attack vector. The attacker is required to either directly serve the binary content to the victim, or place it in a locale like a MP3 sharing application, for the victim to download. The attacker then is notified upon the download or otherwise locates the vulnerability opened up by the buffer overflow.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-44"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
-        <stix:TTP id="example:ttp-fb2ceb11-0c0b-46a1-9f51-8adeb16528f8" timestamp="2016-02-13T08:52:40.271989+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-45</ttp:Title>
+        <stix:TTP id="certuk:ttp-08913945-26e1-4dd9-a0b8-4c473633fc67" timestamp="2016-03-01T10:20:54.790910+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Buffer Overflow via Symbolic Links</ttp:Title>
             <ttp:Description>This type of attack leverages the use of symbolic links to cause buffer overflows. An attacker can try to create or manipulate a symbolic link file such that its contents result in out of bounds data. When the target software processes the symbolic link file, it could potentially overflow internal buffers with insufficient bounds checking.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-45"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
-        <stix:TTP id="example:ttp-a8176a47-842f-45d6-b6b5-f5fc456b4f89" timestamp="2016-02-13T08:52:40.272328+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-46</ttp:Title>
+        <stix:TTP id="certuk:ttp-f1217de8-15dd-4a59-8c1a-8db86e7f3371" timestamp="2016-03-01T10:20:54.791419+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Overflow Variables and Tags</ttp:Title>
             <ttp:Description>This type of attack leverages the use of tags or variables from a formatted configuration data to cause buffer overflow. The attacker crafts a malicious HTML page or configuration file that includes oversized strings, thus causing an overflow.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-46"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
-        <stix:TTP id="example:ttp-4f1632ca-dbb3-402c-ba66-3131e9774477" timestamp="2016-02-13T08:52:40.272643+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-47</ttp:Title>
+        <stix:TTP id="certuk:ttp-2a89cd4a-4b76-4c3a-be5c-e8b0d650cecd" timestamp="2016-03-01T10:20:54.792037+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Buffer Overflow via Parameter Expansion</ttp:Title>
             <ttp:Description>In this attack, the target software is given input that the attacker knows will be modified and expanded in size during processing. This attack relies on the target software failing to anticipate that the expanded data may exceed some internal limit, thereby creating a buffer overflow.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-47"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
-        <stix:TTP id="example:ttp-dcee2c26-e68a-45e2-ba8d-7355c64087c1" timestamp="2016-02-13T08:52:40.272924+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-8</ttp:Title>
+        <stix:TTP id="certuk:ttp-a93332f4-6071-48d9-84e3-476bae4d3757" timestamp="2016-03-01T10:20:54.792709+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Buffer Overflow in an API Call</ttp:Title>
             <ttp:Description>This attack targets libraries or shared code modules which are vulnerable to buffer overflow attacks. An attacker who has access to an API may try to embed malicious code in the API function call and exploit a buffer overflow vulnerability in the function's implementation. All clients that make use of the code library thus become vulnerable by association. This has a very broad effect on security across a system, usually affecting more than one software process.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-8"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
-        <stix:TTP id="example:ttp-ff342c34-37c1-46b7-83db-d371b354bb46" timestamp="2016-02-13T08:52:40.273263+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-9</ttp:Title>
+        <stix:TTP id="certuk:ttp-0cfe382f-b833-4092-a495-d0e790cf4201" timestamp="2016-03-01T10:20:54.793219+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Buffer Overflow in Local Command-Line Utilities</ttp:Title>
             <ttp:Description>This attack targets command-line utilities available in a number of shells. An attacker can leverage a vulnerability found in a command-line utility to escalate privilege to root.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-9"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
-        <stix:TTP id="example:ttp-844a53a3-4708-44ad-987d-dbdcbb581fe6" timestamp="2016-02-13T08:52:40.273537+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-10</ttp:Title>
+        <stix:TTP id="certuk:ttp-5413a57f-207d-43db-b28b-7099218edd92" timestamp="2016-03-01T10:20:54.793758+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Buffer Overflow via Environment Variables</ttp:Title>
             <ttp:Description>This attack pattern involves causing a buffer overflow through manipulation of environment variables. Once the attacker finds that they can modify an environment variable, they may try to overflow associated buffers. This attack leverages implicit trust often placed in environment variables.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-10"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
-        <stix:TTP id="example:ttp-950c590e-0a61-41d1-b7d5-27c30b435083" timestamp="2016-02-13T08:52:40.273823+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-100</ttp:Title>
+        <stix:TTP id="certuk:ttp-6e489b3f-576d-4838-8004-562ce7551b16" timestamp="2016-03-01T10:20:54.794330+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Overflow Buffers</ttp:Title>
             <ttp:Description>Buffer Overflow attacks target improper or missing bounds checking on buffer operations, typically triggered by input injected by an attacker. As a consequence, an attacker is able to write past the boundaries of allocated buffer regions in memory, causing a program crash or potentially redirection of execution as per the attackers' choice.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-100"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
-        <stix:TTP id="example:ttp-10007646-94ee-4ebe-a054-0af0d29ec097" timestamp="2016-02-13T08:52:40.274093+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>CAPEC-14</ttp:Title>
+        <stix:TTP id="certuk:ttp-2a4d2770-c40c-4db8-bdb5-5be4295a13d8" timestamp="2016-03-01T10:20:54.794823+00:00" xsi:type='ttp:TTPType'>
+            <ttp:Title>Client-side Injection-induced Buffer Overflow</ttp:Title>
             <ttp:Description>This type of attack exploits a buffer overflow vulnerability in targeted client software through injection of malicious content from a custom-built hostile service.</ttp:Description>
+            <ttp:Behavior>
+                <ttp:Attack_Patterns>
+                    <ttp:Attack_Pattern capec_id="CAPEC-14"/>
+                </ttp:Attack_Patterns>
+            </ttp:Behavior>
             <ttp:Exploit_Targets>
                 <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" xsi:type='et:ExploitTargetType'/>
+                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
                 </ttp:Exploit_Target>
             </ttp:Exploit_Targets>
         </stix:TTP>
     </stix:TTPs>
     <stix:Exploit_Targets>
-        <stixCommon:Exploit_Target id="example:et-96c8804a-543d-44fb-b7dd-17f998e690c8" timestamp="2016-02-13T08:52:40.270470+00:00" xsi:type='et:ExploitTargetType'>
+        <stixCommon:Exploit_Target id="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" timestamp="2016-03-01T10:20:54.787997+00:00" xsi:type='et:ExploitTargetType'>
             <et:Title>CVE-2015-5119</et:Title>
             <et:Description>Use-after-free vulnerability in the ByteArray class in the ActionScript 3 (AS3) implementation in Adobe Flash Player 13.x through 13.0.0.296 and 14.x through 18.0.0.194 on Windows and OS X and 11.x through 11.2.202.468 on Linux allows remote attackers to execute arbitrary code or cause a denial of service (memory corruption) via crafted Flash content that overrides a ValueOf function, as exploited in the wild in July 2015.</et:Description>
             <et:Vulnerability is_known="true">
@@ -149,6 +205,16 @@
             <et:Weakness>
                 <et:CWE_ID>CWE-119</et:CWE_ID>
             </et:Weakness>
+            <et:Potential_COAs>
+                <et:Potential_COA>
+                    <stixCommon:Course_Of_Action idref="certuk:coa-c5780d4e-b3a1-4c6a-8b85-4b5ab27724b1" timestamp="2016-03-01T10:20:54.787997+00:00" xsi:type='coa:CourseOfActionType'/>
+                </et:Potential_COA>
+            </et:Potential_COAs>
+            <et:Information_Source>
+                <stixCommon:Identity>
+                    <stixCommon:Name>National Vulnerability Database</stixCommon:Name>
+                </stixCommon:Identity>
+            </et:Information_Source>
         </stixCommon:Exploit_Target>
     </stix:Exploit_Targets>
 </stix:STIX_Package>

@@ -5,5 +5,6 @@
   }],
   "coas": [{
     "id": "example:coa-0c6e0337-18bc-4f58-a712-5fd743565180"
-  }]
+  }],
+  "ttp": false
 }
