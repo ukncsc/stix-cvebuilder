@@ -100,9 +100,10 @@ def lastcve(var):
     """Grabs the last 30 CVEs"""
     cve = CVESearch()
     data = json.loads(cve.last())
+    var = var
     if data:
         try:
-            for ob in data['results']:
+            for vulns in data['results']:
                 cvebuild(ob['id'])
         except ImportError:
             pass
