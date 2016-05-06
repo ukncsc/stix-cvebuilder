@@ -182,12 +182,12 @@ def cvebuild(var):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
+    PARSER = argparse.ArgumentParser(
         description='Search for a CVE ID and return a STIX formatted response.')
-    parser.add_argument('-i', '--id', type=cvebuild,
+    PARSER.add_argument('-i', '--id', type=cvebuild,
                         help='Enter the CVE ID that you want to grab')
-    parser.add_argument('-l', '--last', action='store_true',
+    PARSER.add_argument('-l', '--last', action='store_true',
                         help='Pulls down and converts the latest 30 CVEs')
-    args = parser.parse_args()
-    if args.last == True:
+    ARGS = PARSER.parse_ARGS()
+    if ARGS.last == True:
         lastcve()
