@@ -1,9 +1,9 @@
 # CVE-Builder
 [![Code Health](https://landscape.io/github/certuk/cve-builder/master/landscape.svg?style=flat)](https://landscape.io/github/certuk/cve-builder/master)
 
-CVE Builder script that generates STIX formatted Exploit Targets.
+CVE Builder script that generates STIX Exploit Targets.
 
-The script will look at the first parameter as the CVE number and uses the ares module (https://github.com/mrsmn/ares), to provide data from https://cve.circl.lu/. This provides a quick and easy method of prototyping the core information from publicly available CVE information into a STIX package.
+The script will look at the first parameter as the CVE number and uses the ares module (https://github.com/mrsmn/ares), to provide data from https://cve.circl.lu/. This provides a quick and easy method of prototyping the core information from publicly available CVE information into a STIX package. There is additional functionality to then ingest these using an API (Native TAXII coming soon).
 
 Full warning this script is still a work in progress and is by no means a one stop shop to build a fully featured exploit target in STIX. Your own mileage may vary.
 
@@ -14,27 +14,62 @@ Before using the script you will need setup the config file with your own settin
 2. Enter your own settings inside your `config.json` file.
   * The `coas` key defines any COAs you would like to relate to your ET object.
   * The `ttp` key defines if you want TTP objects to be built as part of the package.
+  * The `stix` key defines your namespace and prefix.
+  * The `ingest` key defines settings related to API ingestion.
 
 Once setup your file should look like this:
 ```JSON
 {
-  "stix": [{
-    "ns": "http://avengers.com",
-    "ns_prefix": "avengers"
-  }],
-  "coas": [{
-    "id": "avengers:coa-0c6e0337-18bc-4f58-a712-5fd743565180"
-  }]
+  "coas": [
+    {
+      "id": "avengers:coa-0c6e0337-18bc-4f58-a712-5fd743565180"
+    }
+  ],
+  "ingest": [
+    {
+      "active": false,
+      "endpoint": "http://kb.avengers.com/adapter/certuk_mod/import/",
+      "user": "bot"
+    }
+  ],
+  "stix": [
+    {
+      "ns": "http://avengers.com",
+      "ns_prefix": "avengers"
+    }
+  ],
+  "ttp": false
 }
 ```
 
 
 ## Usage
-From a terminal/command prompt you can use the following to print the STIX and save it as a file.
+From a terminal/command prompt you can use the `-h` option to get an output of the available arguments.
 ```
-$ python cve-builder.py CVE-2015-5119
+$ python cvebuilder.py -h
+usage: cvebuilder.py [-h] [-i ID] [-l]
+
+Search for a CVE ID and return a STIX formatted response.
+
+optional arguments:
+  -h, --help      show this help message and exit
+  -i ID, --id ID  Enter the CVE ID that you want to grab
+  -l, --last      Pulls down and converts the latest 30 CVEs
 ```
 
+To get a single CVE ID returned you would use the following command.
+
+```
+$ python cvebuilder.py -i CVE-2015-5119
+```
+
+Or if you wanted to get the last 30 CVE IDs.
+
+```
+$ python cvebuilder.py -l
+```
+
+Both of these commands will either output to STIX xml in the current directory or use the ingestion API if you have this enabled in the `config.json` file.
 
 Or you can use it as a module within your own script.
 ```python
@@ -54,7 +89,7 @@ The following python libraries are required and can be installed with pip.
 * stix (https://github.com/STIXProject/python-stix)
 
 
-### Installation on Ubuntu 15.10 (and older)
+### Installation
 ```
 $ sudo pip install -r requirements.txt
 ```
