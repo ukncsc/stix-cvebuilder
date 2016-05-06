@@ -97,6 +97,20 @@ def vulnbuild(data):
     return vuln
 
 
+def postconstruct(xml, title):
+    if CONFIG['ingest'][0]['active'] == True:
+        try:
+            inbox_package(CONFIG['ingest'][0]['endpoint'] +
+                          CONFIG['ingest'][0]['user'], xml)
+            print("[+] Successfully ingested " + title)
+        except:
+            print("[+] Failed ingestion for " + title)
+    else:
+        with open(title + ".xml", "w") as text_file:
+            text_file.write(xml)
+        print("[+] Successfully generated " + title)
+
+
 def _construct_headers():
     headers = {
         'Content-Type': 'application/xml',
@@ -129,8 +143,6 @@ def lastcve():
                         history_file.seek(0, 2)
                         cvebuild(vulns['id'])
                         history_file.write(vulns['id'] + "\n")
-                        print(
-                            "[+] Successfully generated package for " + vulns['id'])
         except ImportError:
             pass
 
@@ -188,21 +200,10 @@ def cvebuild(var):
         pkg.add_exploit_target(expt)
 
         xml = pkg.to_xml()
-
+        title = pkg.id_.split(':', 1)[-1]
         # If the function is not imported then output the xml to a file.
         if __name__ == '__main__':
-            if CONFIG['ingest'][0]['active'] == True:
-                try:
-                    inbox_package(CONFIG['ingest'][0]['endpoint'] +
-                                  CONFIG['ingest'][0]['user'], pkg.to_xml())
-                    print("[+] Successfully ingested package for " + var)
-                except:
-                    print("[+] Failed ingestion for " + var)
-            else:
-                title = pkg.id_.split(':', 1)[-1]
-                with open(title + ".xml", "w") as text_file:
-                    text_file.write(xml)
-                print("[+] Successfully generated package for " + var)
+            postconstruct(xml, title)
         return xml
 
 
