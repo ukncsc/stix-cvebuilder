@@ -96,11 +96,10 @@ def vulnbuild(data):
     return vuln
 
 
-def lastcve(var):
+def lastcve():
     """Grabs the last 30 CVEs"""
     cve = CVESearch()
     data = json.loads(cve.last())
-    var = var
     print("[+] Attempting to retrieve the latest 30 CVEs")
     if data:
         try:
@@ -178,20 +177,17 @@ def cvebuild(var):
             title = pkg.id_.split(':', 1)[-1]
             with open(title + ".xml", "w") as text_file:
                 text_file.write(xml)
+            print("[+] Successfully generated package for " + var)
         return xml
 
 parser = argparse.ArgumentParser(
     description='Search for a CVE ID and return a STIX formatted response.')
 parser.add_argument('-i', '--id', type=cvebuild,
                     help='Enter the CVE ID that you want to grab')
-parser.add_argument('-l', '--last', type=lastcve,
+parser.add_argument('-l', '--last', action='store_true',
                     help='Pulls down and converts the latest 30 CVEs')
 args = parser.parse_args()
 
-# if __name__ == '__main__':
-#     # Does a quick check to ensure a variable has been given to the script
-#     if len(sys.argv) > 1:
-#         EXPLOITXML = cvebuild(sys.argv[1])
-#         print(EXPLOITXML)
-#     else:
-#         print("Please enter a CVE ID to enrich.")
+if __name__ == '__main__':
+    if args.last == True:
+        lastcve()
