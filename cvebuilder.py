@@ -39,7 +39,7 @@ COAS = CONFIG['coas']
 TTPON = CONFIG['ttp']
 
 
-def marking():
+def _marking():
     """Define the TLP marking and the inheritance."""
     marking_specification = MarkingSpecification()
     tlp = TLPMarkingStructure()
@@ -55,7 +55,7 @@ def marking():
     return handling
 
 
-def weakbuild(data):
+def _weakbuild(data):
     """Define the weaknesses."""
     if data['cwe'] != 'Unknown':
         weak = Weakness()
@@ -63,7 +63,7 @@ def weakbuild(data):
         return weak
 
 
-def buildttp(i, expt):
+def _buildttp(i, expt):
     """Do some TTP stuff."""
     ttp = TTP()
     ttp.title = str(i['name'])
@@ -78,7 +78,7 @@ def buildttp(i, expt):
     return ttp
 
 
-def vulnbuild(data):
+def _vulnbuild(data):
     """Do some vulnerability stuff."""
     vuln = Vulnerability()
     vuln.cve_id = data['id']
@@ -97,7 +97,7 @@ def vulnbuild(data):
     return vuln
 
 
-def postconstruct(xml, title):
+def _postconstruct(xml, title):
     if CONFIG['ingest'][0]['active'] == True:
         try:
             inbox_package(CONFIG['ingest'][0]['endpoint'] +
@@ -119,7 +119,7 @@ def _construct_headers():
     return headers
 
 
-def inbox_package(endpoint_url, stix_package):
+def _inbox_package(endpoint_url, stix_package):
     """Inbox the package to the adapter."""
     data = stix_package
     headers = _construct_headers()
