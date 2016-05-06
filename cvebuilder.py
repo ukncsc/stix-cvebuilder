@@ -97,7 +97,7 @@ def vulnbuild(data):
 
 
 def lastcve():
-    """Grabs the last 30 CVEs"""
+    """Grab the last 30 CVEs."""
     cve = CVESearch()
     data = json.loads(cve.last())
     print("[+] Attempting to retrieve the latest 30 CVEs")
