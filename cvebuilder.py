@@ -106,10 +106,10 @@ def _construct_headers():
 
 
 def inbox_package(endpoint_url, stix_package):
+    """Inbox the package to the adapter."""
     data = stix_package
     headers = _construct_headers()
     response = requests.post(endpoint_url, data=data, headers=headers)
-    print "HTTP status: %d %s" % (response.status_code, response.reason)
     print json.dumps(response.json(), indent=4)
     return
 
