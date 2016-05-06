@@ -13,6 +13,7 @@ import json
 import os
 import sys
 
+import requests
 from ares import CVESearch
 from stix.coa import CourseOfAction
 from stix.common import Identity, InformationSource
@@ -96,6 +97,23 @@ def vulnbuild(data):
     return vuln
 
 
+def _construct_headers():
+    headers = {
+        'Content-Type': 'application/xml',
+        'Accept': 'application/json'
+    }
+    return headers
+
+
+def inbox_package(endpoint_url, stix_package):
+    data = stix_package
+    headers = _construct_headers()
+    response = requests.post(endpoint_url, data=data, headers=headers)
+    print "HTTP status: %d %s" % (response.status_code, response.reason)
+    print json.dumps(response.json(), indent=4)
+    return
+
+
 def lastcve():
     """Grab the last 30 CVEs."""
     cve = CVESearch()
@@ -171,6 +189,10 @@ def cvebuild(var):
         pkg.add_exploit_target(expt)
 
         xml = pkg.to_xml()
+        if CONFIG['ingest'][0]['active'] == True:
+            inbox_package(CONFIG['ingest'][0]['endpoint'] +
+                          CONFIG['ingest'][0]['user'], pkg.to_xml())
+            print("[+] Successfully ingested package for " + var)
 
         # If the function is not imported then output the xml to a file.
         if __name__ == '__main__':
@@ -188,6 +210,6 @@ if __name__ == '__main__':
                         help='Enter the CVE ID that you want to grab')
     PARSER.add_argument('-l', '--last', action='store_true',
                         help='Pulls down and converts the latest 30 CVEs')
-    ARGS = PARSER.parse_ARGS()
+    ARGS = PARSER.parse_args()
     if ARGS.last == True:
         lastcve()
