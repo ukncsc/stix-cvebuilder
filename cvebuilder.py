@@ -10,12 +10,13 @@ STIX package.
 
 import argparse
 import json
-import sys
 import os
+import sys
+
 from ares import CVESearch
 from stix.coa import CourseOfAction
-from stix.common import InformationSource, Identity
-from stix.core import STIXPackage, STIXHeader
+from stix.common import Identity, InformationSource
+from stix.core import STIXHeader, STIXPackage
 from stix.data_marking import Marking, MarkingSpecification
 from stix.exploit_target import ExploitTarget, Vulnerability, Weakness
 from stix.exploit_target.vulnerability import CVSSVector
@@ -23,7 +24,6 @@ from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
-
 
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 
@@ -101,10 +101,18 @@ def lastcve(var):
     cve = CVESearch()
     data = json.loads(cve.last())
     var = var
+    print("[+] Attempting to retrieve the latest 30 CVEs")
     if data:
         try:
             for vulns in data['results']:
-                cvebuild(ob['id'])
+                with open('history.txt', 'ab+') as f:
+                    if vulns['id'] in f.read():
+                        print(
+                            "[+] Package already generated for " + vulns['id'])
+                    else:
+                        f.seek(0, 2)
+                        cvebuild(vulns['id'])
+                        f.write(vulns['id'] + "\n")
         except ImportError:
             pass
 
@@ -172,8 +180,10 @@ def cvebuild(var):
 
 parser = argparse.ArgumentParser(
     description='Search for a CVE ID and return a STIX formatted response.')
-parser.add_argument('-i', '--id', type=cvebuild, help='Some help fella')
-parser.add_argument('-l', '--last', type=lastcve, help='Some help fella')
+parser.add_argument('-i', '--id', type=cvebuild,
+                    help='Enter the CVE ID that you want to grab')
+parser.add_argument('-l', '--last', type=lastcve,
+                    help='Pulls down and converts the latest 30 CVEs')
 args = parser.parse_args()
 
 # if __name__ == '__main__':
