@@ -13,6 +13,7 @@ import json
 import os
 import sys
 
+import requests
 from ares import CVESearch
 from stix.coa import CourseOfAction
 from stix.common import Identity, InformationSource
@@ -38,7 +39,7 @@ COAS = CONFIG['coas']
 TTPON = CONFIG['ttp']
 
 
-def marking():
+def _marking():
     """Define the TLP marking and the inheritance."""
     marking_specification = MarkingSpecification()
     tlp = TLPMarkingStructure()
@@ -54,7 +55,7 @@ def marking():
     return handling
 
 
-def weakbuild(data):
+def _weakbuild(data):
     """Define the weaknesses."""
     if data['cwe'] != 'Unknown':
         weak = Weakness()
@@ -62,7 +63,7 @@ def weakbuild(data):
         return weak
 
 
-def buildttp(i, expt):
+def _buildttp(i, expt):
     """Do some TTP stuff."""
     ttp = TTP()
     ttp.title = str(i['name'])
@@ -77,7 +78,7 @@ def buildttp(i, expt):
     return ttp
 
 
-def vulnbuild(data):
+def _vulnbuild(data):
     """Do some vulnerability stuff."""
     vuln = Vulnerability()
     vuln.cve_id = data['id']
@@ -96,6 +97,37 @@ def vulnbuild(data):
     return vuln
 
 
+def _postconstruct(xml, title):
+    if CONFIG['ingest'][0]['active'] == True:
+        try:
+            _inbox_package(CONFIG['ingest'][0]['endpoint'] +
+                           CONFIG['ingest'][0]['user'], xml)
+            print("[+] Successfully ingested " + title)
+        except ValueError:
+            print("[+] Failed ingestion for " + title)
+    else:
+        with open(title + ".xml", "w") as text_file:
+            text_file.write(xml)
+        print("[+] Successfully generated " + title)
+
+
+def _construct_headers():
+    headers = {
+        'Content-Type': 'application/xml',
+        'Accept': 'application/json'
+    }
+    return headers
+
+
+def _inbox_package(endpoint_url, stix_package):
+    """Inbox the package to the adapter."""
+    data = stix_package
+    headers = _construct_headers()
+    response = requests.post(endpoint_url, data=data, headers=headers)
+    print(json.dumps(response.json(), indent=4))
+    return
+
+
 def lastcve():
     """Grab the last 30 CVEs."""
     cve = CVESearch()
@@ -106,14 +138,11 @@ def lastcve():
             for vulns in data['results']:
                 with open('history.txt', 'ab+') as history_file:
                     if vulns['id'] in history_file.read():
-                        print(
-                            "[+] Package already generated for " + vulns['id'])
+                        print("[+] Package already generated for " + vulns['id'])
                     else:
                         history_file.seek(0, 2)
                         cvebuild(vulns['id'])
                         history_file.write(vulns['id'] + "\n")
-                        print(
-                            "[+] Successfully generated package for " + vulns['id'])
         except ImportError:
             pass
 
@@ -138,7 +167,7 @@ def cvebuild(var):
         pkg = STIXPackage()
         pkg.stix_header = STIXHeader()
 
-        pkg.stix_header.handling = marking()
+        pkg.stix_header.handling = _marking()
 
         # Define the exploit target
         expt = ExploitTarget()
@@ -148,7 +177,7 @@ def cvebuild(var):
             identity=Identity(name="National Vulnerability Database"))
 
         # Add the vulnerability object to the package object
-        expt.add_vulnerability(vulnbuild(data))
+        expt.add_vulnerability(_vulnbuild(data))
 
         # Add the COA object to the ET object
         for coa in COAS:
@@ -161,23 +190,20 @@ def cvebuild(var):
         if TTPON is True:
             try:
                 for i in data['capec']:
-                    pkg.add_ttp(buildttp(i, expt))
+                    pkg.add_ttp(_buildttp(i, expt))
             except KeyError:
                 pass
 
-        expt.add_weakness(weakbuild(data))
+        expt.add_weakness(_weakbuild(data))
 
         # Add the exploit target to the package object
         pkg.add_exploit_target(expt)
 
         xml = pkg.to_xml()
-
+        title = pkg.id_.split(':', 1)[-1]
         # If the function is not imported then output the xml to a file.
         if __name__ == '__main__':
-            title = pkg.id_.split(':', 1)[-1]
-            with open(title + ".xml", "w") as text_file:
-                text_file.write(xml)
-            print("[+] Successfully generated package for " + var)
+            _postconstruct(xml, title)
         return xml
 
 
@@ -188,6 +214,6 @@ if __name__ == '__main__':
                         help='Enter the CVE ID that you want to grab')
     PARSER.add_argument('-l', '--last', action='store_true',
                         help='Pulls down and converts the latest 30 CVEs')
-    ARGS = PARSER.parse_ARGS()
+    ARGS = PARSER.parse_args()
     if ARGS.last == True:
         lastcve()
