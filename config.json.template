@@ -1,10 +1,21 @@
 {
-  "stix": [{
-    "ns": "http://example.com",
-    "ns_prefix": "example"
-  }],
-  "coas": [{
-    "id": "example:coa-0c6e0337-18bc-4f58-a712-5fd743565180"
-  }],
+  "coas": [
+    {
+      "id": "example:coa-0c6e0337-18bc-4f58-a712-5fd743565180"
+    }
+  ],
+  "ingest": [
+    {
+      "active": false,
+      "endpoint": "http://edge.example.com/adapter/certuk_mod/import/",
+      "user": "username"
+    }
+  ],
+  "stix": [
+    {
+      "ns": "http://example.com",
+      "ns_prefix": "example"
+    }
+  ],
   "ttp": false
 }
