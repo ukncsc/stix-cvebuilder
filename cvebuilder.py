@@ -124,8 +124,7 @@ def lastcve():
             for vulns in data['results']:
                 with open('history.txt', 'ab+') as history_file:
                     if vulns['id'] in history_file.read():
-                        print(
-                            "[+] Package already generated for " + vulns['id'])
+                        print("[+] Package already generated for " + vulns['id'])
                     else:
                         history_file.seek(0, 2)
                         cvebuild(vulns['id'])
