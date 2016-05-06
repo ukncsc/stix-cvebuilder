@@ -103,7 +103,7 @@ def _postconstruct(xml, title):
             _inbox_package(CONFIG['ingest'][0]['endpoint'] +
                            CONFIG['ingest'][0]['user'], xml)
             print("[+] Successfully ingested " + title)
-        except Exception:
+        except ValueError:
             print("[+] Failed ingestion for " + title)
     else:
         with open(title + ".xml", "w") as text_file:
