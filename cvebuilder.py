@@ -113,6 +113,7 @@ def lastcve(var):
                         f.seek(0, 2)
                         cvebuild(vulns['id'])
                         f.write(vulns['id'] + "\n")
+                        print("[+] Package generated for " + vulns['id'])
         except ImportError:
             pass
 
