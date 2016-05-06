@@ -8,13 +8,15 @@ the core information from publicly available CVE information into a
 STIX package.
 """
 
+import argparse
 import json
-import sys
 import os
+import sys
+
 from ares import CVESearch
 from stix.coa import CourseOfAction
-from stix.common import InformationSource, Identity
-from stix.core import STIXPackage, STIXHeader
+from stix.common import Identity, InformationSource
+from stix.core import STIXHeader, STIXPackage
 from stix.data_marking import Marking, MarkingSpecification
 from stix.exploit_target import ExploitTarget, Vulnerability, Weakness
 from stix.exploit_target.vulnerability import CVSSVector
@@ -22,8 +24,6 @@ from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
-
-
 
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 
@@ -96,6 +96,28 @@ def vulnbuild(data):
     return vuln
 
 
+def lastcve():
+    """Grab the last 30 CVEs."""
+    cve = CVESearch()
+    data = json.loads(cve.last())
+    print("[+] Attempting to retrieve the latest 30 CVEs")
+    if data:
+        try:
+            for vulns in data['results']:
+                with open('history.txt', 'ab+') as history_file:
+                    if vulns['id'] in history_file.read():
+                        print(
+                            "[+] Package already generated for " + vulns['id'])
+                    else:
+                        history_file.seek(0, 2)
+                        cvebuild(vulns['id'])
+                        history_file.write(vulns['id'] + "\n")
+                        print(
+                            "[+] Successfully generated package for " + vulns['id'])
+        except ImportError:
+            pass
+
+
 def cvebuild(var):
     """Search for a CVE ID and return a STIX formatted response."""
     cve = CVESearch()
@@ -155,12 +177,17 @@ def cvebuild(var):
             title = pkg.id_.split(':', 1)[-1]
             with open(title + ".xml", "w") as text_file:
                 text_file.write(xml)
+            print("[+] Successfully generated package for " + var)
         return xml
 
+
 if __name__ == '__main__':
-    # Does a quick check to ensure a variable has been given to the script
-    if len(sys.argv) > 1:
-        EXPLOITXML = cvebuild(sys.argv[1])
-        print(EXPLOITXML)
-    else:
-        print("Please enter a CVE ID to enrich.")
+    PARSER = argparse.ArgumentParser(
+        description='Search for a CVE ID and return a STIX formatted response.')
+    PARSER.add_argument('-i', '--id', type=cvebuild,
+                        help='Enter the CVE ID that you want to grab')
+    PARSER.add_argument('-l', '--last', action='store_true',
+                        help='Pulls down and converts the latest 30 CVEs')
+    ARGS = PARSER.parse_ARGS()
+    if ARGS.last == True:
+        lastcve()
