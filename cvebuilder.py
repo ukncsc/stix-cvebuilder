@@ -110,7 +110,7 @@ def inbox_package(endpoint_url, stix_package):
     data = stix_package
     headers = _construct_headers()
     response = requests.post(endpoint_url, data=data, headers=headers)
-    print json.dumps(response.json(), indent=4)
+    print(json.dumps(response.json(), indent=4))
     return
 
 
@@ -188,17 +188,21 @@ def cvebuild(var):
         pkg.add_exploit_target(expt)
 
         xml = pkg.to_xml()
-        if CONFIG['ingest'][0]['active'] == True:
-            inbox_package(CONFIG['ingest'][0]['endpoint'] +
-                          CONFIG['ingest'][0]['user'], pkg.to_xml())
-            print("[+] Successfully ingested package for " + var)
 
         # If the function is not imported then output the xml to a file.
         if __name__ == '__main__':
-            title = pkg.id_.split(':', 1)[-1]
-            with open(title + ".xml", "w") as text_file:
-                text_file.write(xml)
-            print("[+] Successfully generated package for " + var)
+            if CONFIG['ingest'][0]['active'] == True:
+                try:
+                    inbox_package(CONFIG['ingest'][0]['endpoint'] +
+                                  CONFIG['ingest'][0]['user'], pkg.to_xml())
+                    print("[+] Successfully ingested package for " + var)
+                except:
+                    print("[+] Failed ingestion for " + var)
+            else:
+                title = pkg.id_.split(':', 1)[-1]
+                with open(title + ".xml", "w") as text_file:
+                    text_file.write(xml)
+                print("[+] Successfully generated package for " + var)
         return xml
 
 
