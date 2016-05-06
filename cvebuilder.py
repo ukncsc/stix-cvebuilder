@@ -100,8 +100,8 @@ def _vulnbuild(data):
 def _postconstruct(xml, title):
     if CONFIG['ingest'][0]['active'] == True:
         try:
-            inbox_package(CONFIG['ingest'][0]['endpoint'] +
-                          CONFIG['ingest'][0]['user'], xml)
+            _inbox_package(CONFIG['ingest'][0]['endpoint'] +
+                           CONFIG['ingest'][0]['user'], xml)
             print("[+] Successfully ingested " + title)
         except Exception:
             print("[+] Failed ingestion for " + title)
@@ -167,7 +167,7 @@ def cvebuild(var):
         pkg = STIXPackage()
         pkg.stix_header = STIXHeader()
 
-        pkg.stix_header.handling = marking()
+        pkg.stix_header.handling = _marking()
 
         # Define the exploit target
         expt = ExploitTarget()
@@ -177,7 +177,7 @@ def cvebuild(var):
             identity=Identity(name="National Vulnerability Database"))
 
         # Add the vulnerability object to the package object
-        expt.add_vulnerability(vulnbuild(data))
+        expt.add_vulnerability(_vulnbuild(data))
 
         # Add the COA object to the ET object
         for coa in COAS:
@@ -190,11 +190,11 @@ def cvebuild(var):
         if TTPON is True:
             try:
                 for i in data['capec']:
-                    pkg.add_ttp(buildttp(i, expt))
+                    pkg.add_ttp(_buildttp(i, expt))
             except KeyError:
                 pass
 
-        expt.add_weakness(weakbuild(data))
+        expt.add_weakness(_weakbuild(data))
 
         # Add the exploit target to the package object
         pkg.add_exploit_target(expt)
@@ -203,7 +203,7 @@ def cvebuild(var):
         title = pkg.id_.split(':', 1)[-1]
         # If the function is not imported then output the xml to a file.
         if __name__ == '__main__':
-            postconstruct(xml, title)
+            _postconstruct(xml, title)
         return xml
 
 
