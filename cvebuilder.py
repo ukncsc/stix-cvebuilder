@@ -104,14 +104,14 @@ def lastcve():
     if data:
         try:
             for vulns in data['results']:
-                with open('history.txt', 'ab+') as f:
-                    if vulns['id'] in f.read():
+                with open('history.txt', 'ab+') as history_file:
+                    if vulns['id'] in history_file.read():
                         print(
                             "[+] Package already generated for " + vulns['id'])
                     else:
-                        f.seek(0, 2)
+                        history_file.seek(0, 2)
                         cvebuild(vulns['id'])
-                        f.write(vulns['id'] + "\n")
+                        history_file.write(vulns['id'] + "\n")
                         print(
                             "[+] Successfully generated package for " + vulns['id'])
         except ImportError:
@@ -180,14 +180,14 @@ def cvebuild(var):
             print("[+] Successfully generated package for " + var)
         return xml
 
-parser = argparse.ArgumentParser(
-    description='Search for a CVE ID and return a STIX formatted response.')
-parser.add_argument('-i', '--id', type=cvebuild,
-                    help='Enter the CVE ID that you want to grab')
-parser.add_argument('-l', '--last', action='store_true',
-                    help='Pulls down and converts the latest 30 CVEs')
-args = parser.parse_args()
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Search for a CVE ID and return a STIX formatted response.')
+    parser.add_argument('-i', '--id', type=cvebuild,
+                        help='Enter the CVE ID that you want to grab')
+    parser.add_argument('-l', '--last', action='store_true',
+                        help='Pulls down and converts the latest 30 CVEs')
+    args = parser.parse_args()
     if args.last == True:
         lastcve()
