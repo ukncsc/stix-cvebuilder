@@ -16,6 +16,7 @@ Before using the script you will need setup the config file with your own settin
   * The `ttp` key defines if you want TTP objects to be built as part of the package.
   * The `stix` key defines your namespace and prefix.
   * The `ingest` key defines settings related to API ingestion.
+  * The `taxii` key defines settings related to TAXII inboxing.
 
 Once setup your file should look like this:
 ```JSON
@@ -36,6 +37,18 @@ Once setup your file should look like this:
     {
       "ns": "http://avengers.com",
       "ns_prefix": "avengers"
+    }
+  ],
+  "taxii": [
+    {
+      "active": false,
+      "binding": "urn:stix.mitre.org:xml:1.1.1",
+      "discovery_path": "/taxii-discovery-service",
+      "host": "kb.avengers.com",
+      "inbox_path": "/taxii-data",
+      "password": "password",
+      "ssl": false,
+      "username": "username"
     }
   ],
   "ttp": false
@@ -69,7 +82,7 @@ Or if you wanted to get the last 30 CVE IDs.
 $ python cvebuilder.py -l
 ```
 
-Both of these commands will either output to STIX xml in the current directory or use the ingestion API if you have this enabled in the `config.json` file.
+Both of these commands will generate the STIX file for the CVE ID unless you have enabled either the TAXII or Ingest options in the `config.json` file.
 
 Or you can use it as a module within your own script.
 ```python
@@ -87,6 +100,8 @@ An example output can be found in the [Example](Example-Package-7cbc9064-8662-4f
 The following python libraries are required and can be installed with pip.
 * ares (https://github.com/mrsmn/ares)
 * stix (https://github.com/STIXProject/python-stix)
+* cabby (https://github.com/EclecticIQ/cabby)
+
 
 
 ### Installation
