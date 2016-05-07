@@ -15,6 +15,7 @@ import sys
 
 import requests
 from ares import CVESearch
+from cabby import create_client
 from stix.coa import CourseOfAction
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
@@ -53,6 +54,16 @@ def _marking():
     handling = Marking()
     handling.add_marking(marking_specification)
     return handling
+
+
+def _taxii(content):
+    client = create_client(CONFIG['taxii'][0]['host'], use_https=CONFIG['taxii'][0][
+                           'ssl'], discovery_path=CONFIG['taxii'][0]['discovery_path'])
+    content = content
+    binding = CONFIG['taxii'][0]['binding']
+    client.set_auth(username=CONFIG['taxii'][0][
+                    'username'], password=CONFIG['taxii'][0]['password'])
+    client.push(content, binding, uri=CONFIG['taxii'][0]['inbox_path'])
 
 
 def _weakbuild(data):
@@ -105,6 +116,12 @@ def _postconstruct(xml, title):
             print("[+] Successfully ingested " + title)
         except ValueError:
             print("[+] Failed ingestion for " + title)
+    elif CONFIG['taxii'][0]['active'] == True:
+        try:
+            _taxii(xml)
+            print("[+] Successfully inboxed " + title)
+        except cabby.exceptions.UnsuccessfulStatusError, requests.exceptions.ConnectionError:
+            print("[+] Failed inbox for " + title)
     else:
         with open(title + ".xml", "w") as text_file:
             text_file.write(xml)
