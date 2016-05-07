@@ -3,7 +3,9 @@
 
 CVE Builder script that generates STIX Exploit Targets.
 
-The script will look at the first parameter as the CVE number and uses the ares module (https://github.com/mrsmn/ares), to provide data from https://cve.circl.lu/. This provides a quick and easy method of prototyping the core information from publicly available CVE information into a STIX package. There is additional functionality to then ingest these using an API (Native TAXII coming soon).
+The script will look at the first parameter as the CVE number and uses the ares module (https://github.com/mrsmn/ares), to provide data from https://cve.circl.lu/. This provides a quick and easy method of prototyping the core information from publicly available CVE information into a STIX package.
+
+Additional support is available for ingestion using the CERT-UK Edge mods or using native TAXII.
 
 Full warning this script is still a work in progress and is by no means a one stop shop to build a fully featured exploit target in STIX. Your own mileage may vary.
 
