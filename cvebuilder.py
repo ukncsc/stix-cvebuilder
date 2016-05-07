@@ -120,7 +120,7 @@ def _postconstruct(xml, title):
         try:
             _taxii(xml)
             print("[+] Successfully inboxed " + title)
-        except cabby.exceptions.UnsuccessfulStatusError, requests.exceptions.ConnectionError:
+        except (cabby.exceptions.UnsuccessfulStatusError, requests.exceptions.ConnectionError):
             print("[+] Failed inbox for " + title)
     else:
         with open(title + ".xml", "w") as text_file:
