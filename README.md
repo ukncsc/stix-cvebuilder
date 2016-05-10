@@ -10,6 +10,11 @@ Additional support is available for ingestion using the CERT-UK Edge mods or usi
 Full warning this script is still a work in progress and is by no means a one stop shop to build a fully featured exploit target in STIX. Your own mileage may vary.
 
 ## Setup
+To install the script you can clone the repository using `git clone` once done you will need to enable the common submodule by:
+
+1. `git submodule init`
+2. `git submodule update`
+
 Before using the script you will need setup the config file with your own settings:
 
 1. Make a copy of the `config.json.template` file and rename it to `config.json`.
