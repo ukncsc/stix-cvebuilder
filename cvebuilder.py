@@ -15,7 +15,6 @@ import sys
 
 import requests
 from ares import CVESearch
-from cabby import create_client
 from stix.coa import CourseOfAction
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
@@ -111,8 +110,13 @@ def _postconstruct(xml, title):
             print("[+] Failed ingestion for " + title)
     elif CONFIG['taxii'][0]['active'] == True:
         try:
-            taxii._taxii(xml, CONFIG['taxii'][0]['host'], CONFIG['taxii'][0]['ssl'], CONFIG['taxii'][0]['discovery_path'], CONFIG['taxii'][
-                0]['binding'], CONFIG['taxii'][0]['username'], CONFIG['taxii'][0]['password'], CONFIG['taxii'][0]['inbox_path'])
+            taxii._taxii(xml, CONFIG['taxii'][0]['host'],
+                         CONFIG['taxii'][0]['ssl'], CONFIG[
+                             'taxii'][0]['discovery_path'],
+                         CONFIG['taxii'][0]['binding'], CONFIG[
+                             'taxii'][0]['username'],
+                         CONFIG['taxii'][0]['password'],
+                         CONFIG['taxii'][0]['inbox_path'])
             print("[+] Successfully inboxed " + title)
         except requests.exceptions.ConnectionError:
             print("[+] Failed inbox for " + title)
