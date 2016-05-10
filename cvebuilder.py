@@ -103,20 +103,20 @@ def _vulnbuild(data):
 def _postconstruct(xml, title):
     if CONFIG['ingest'][0]['active'] == True:
         try:
-            ingest._inbox_package(CONFIG['ingest'][0]['endpoint'] +
-                                  CONFIG['ingest'][0]['user'], xml)
+            ingest.inbox_package(CONFIG['ingest'][0]['endpoint'] +
+                                 CONFIG['ingest'][0]['user'], xml)
             print("[+] Successfully ingested " + title)
         except ValueError:
             print("[+] Failed ingestion for " + title)
     elif CONFIG['taxii'][0]['active'] == True:
         try:
-            taxii._taxii(xml, CONFIG['taxii'][0]['host'],
-                         CONFIG['taxii'][0]['ssl'], CONFIG[
-                             'taxii'][0]['discovery_path'],
-                         CONFIG['taxii'][0]['binding'], CONFIG[
-                             'taxii'][0]['username'],
-                         CONFIG['taxii'][0]['password'],
-                         CONFIG['taxii'][0]['inbox_path'])
+            taxii.taxii(xml, CONFIG['taxii'][0]['host'],
+                        CONFIG['taxii'][0]['ssl'], CONFIG[
+                'taxii'][0]['discovery_path'],
+                CONFIG['taxii'][0]['binding'], CONFIG[
+                'taxii'][0]['username'],
+                CONFIG['taxii'][0]['password'],
+                CONFIG['taxii'][0]['inbox_path'])
             print("[+] Successfully inboxed " + title)
         except requests.exceptions.ConnectionError:
             print("[+] Failed inbox for " + title)
