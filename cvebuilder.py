@@ -27,6 +27,9 @@ from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
 
+import common.ingest
+import common.taxii
+
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 
 with open('config.json') as data_file:
@@ -54,16 +57,6 @@ def _marking():
     handling = Marking()
     handling.add_marking(marking_specification)
     return handling
-
-
-def _taxii(content):
-    client = create_client(CONFIG['taxii'][0]['host'], use_https=CONFIG['taxii'][0][
-                           'ssl'], discovery_path=CONFIG['taxii'][0]['discovery_path'])
-    content = content
-    binding = CONFIG['taxii'][0]['binding']
-    client.set_auth(username=CONFIG['taxii'][0][
-                    'username'], password=CONFIG['taxii'][0]['password'])
-    client.push(content, binding, uri=CONFIG['taxii'][0]['inbox_path'])
 
 
 def _weakbuild(data):
@@ -118,7 +111,8 @@ def _postconstruct(xml, title):
             print("[+] Failed ingestion for " + title)
     elif CONFIG['taxii'][0]['active'] == True:
         try:
-            _taxii(xml)
+            _taxii(xml, CONFIG['taxii'][0]['host'], CONFIG['taxii'][0]['ssl'], CONFIG['taxii'][0]['discovery_path'], CONFIG['taxii'][
+                   0]['binding'], CONFIG['taxii'][0]['username'], CONFIG['taxii'][0]['password'], CONFIG['taxii'][0]['inbox_path'])
             print("[+] Successfully inboxed " + title)
         except requests.exceptions.ConnectionError:
             print("[+] Failed inbox for " + title)
@@ -126,23 +120,6 @@ def _postconstruct(xml, title):
         with open(title + ".xml", "w") as text_file:
             text_file.write(xml)
         print("[+] Successfully generated " + title)
-
-
-def _construct_headers():
-    headers = {
-        'Content-Type': 'application/xml',
-        'Accept': 'application/json'
-    }
-    return headers
-
-
-def _inbox_package(endpoint_url, stix_package):
-    """Inbox the package to the adapter."""
-    data = stix_package
-    headers = _construct_headers()
-    response = requests.post(endpoint_url, data=data, headers=headers)
-    print(json.dumps(response.json(), indent=4))
-    return
 
 
 def lastcve():
