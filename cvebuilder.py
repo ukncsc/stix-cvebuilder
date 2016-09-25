@@ -101,8 +101,8 @@ def _vulnbuild(data):
 def _postconstruct(xml, title):
     if CONFIG['ingest'][0]['active']:
         try:
-            _certuk_inbox(CONFIG['ingest'][0]['endpoint'] +
-                          CONFIG['ingest'][0]['user'], xml)
+            _certuk_inbox(xml, CONFIG['ingest'][0][
+                          'endpoint'] + CONFIG['ingest'][0]['user'])
             print("[+] Successfully ingested " + title)
         except ValueError:
             print("[+] Failed ingestion for " + title)

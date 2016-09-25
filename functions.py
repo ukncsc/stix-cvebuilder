@@ -19,9 +19,9 @@ def _construct_headers():
     return headers
 
 
-def _certuk_inbox(endpoint_url, stix_package):
+def _certuk_inbox(content, endpoint_url):
     """Inbox the package to the certuk adapter."""
-    data = stix_package
+    data = content
     headers = _construct_headers()
     response = requests.post(endpoint_url, data=data, headers=headers)
     print(json.dumps(response.json(), indent=4))
