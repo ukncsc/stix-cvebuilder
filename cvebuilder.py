@@ -108,13 +108,7 @@ def _postconstruct(xml, title):
             print("[+] Failed ingestion for " + title)
     elif CONFIG['taxii'][0]['active']:
         try:
-            _taxii_inbox(xml, CONFIG['taxii'][0]['host'],
-                         CONFIG['taxii'][0]['ssl'], CONFIG[
-                'taxii'][0]['discovery_path'],
-                CONFIG['taxii'][0]['binding'], CONFIG[
-                'taxii'][0]['username'],
-                CONFIG['taxii'][0]['password'],
-                CONFIG['taxii'][0]['inbox_path'])
+            _taxii_inbox(xml, CONFIG['taxii'][0])
             print("[+] Successfully inboxed " + title)
         except requests.exceptions.ConnectionError:
             print("[+] Failed inbox for " + title)

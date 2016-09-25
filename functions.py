@@ -28,9 +28,10 @@ def _certuk_inbox(endpoint_url, stix_package):
     return
 
 
-def _taxii_inbox(content, host, ssl, discovery, binding, user, password, inbox):
-    client = create_client(host, use_https=ssl, discovery_path=discovery)
+def _taxii_inbox(content, config):
+    client = create_client(config['host'], use_https=config[
+                           'ssl'], discovery_path=config['discovery_path'])
     content = content
-    binding = binding
-    client.set_auth(username=user, password=password)
-    client.push(content, binding, uri=inbox)
+    binding = config['binding']
+    client.set_auth(username=config['username'], password=config['password'])
+    client.push(content, binding, uri=config['inbox_path'])
