@@ -91,7 +91,7 @@ def _affectsoft(data):
         prod_obj.vendor = id_list[3]
         if len(id_list) > 6:
             prod_obj.version = id_list[5] + " " + id_list[6]
-        else:
+        elif len(id_list) == 6:
             prod_obj.version = id_list[5]
         prod_obs = Observable(prod_obj)
         prod_obs.title = "Product: " + software['title']
