@@ -88,7 +88,7 @@ def _affectsoft(data):
         prod_obj = Product()
         prod_obj.product = software['title']
         prod_obj.Device_Details = software['id']
-        prod_obj.vendor = id_list[3]
+        prod_obj.vendor = id_list[3].title()
         if len(id_list) > 6:
             prod_obj.version = id_list[5] + " " + id_list[6]
         elif len(id_list) == 6:
