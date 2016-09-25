@@ -15,13 +15,15 @@ import sys
 
 import requests
 from ares import CVESearch
+from cybox.core import Observable
+from cybox.objects.product_object import Product
 from functions import _certuk_inbox, _taxii_inbox
 from stix.coa import CourseOfAction
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
 from stix.data_marking import Marking, MarkingSpecification
 from stix.exploit_target import ExploitTarget, Vulnerability, Weakness
-from stix.exploit_target.vulnerability import CVSSVector
+from stix.exploit_target.vulnerability import AffectedSoftware, CVSSVector
 from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
@@ -79,6 +81,24 @@ def _buildttp(i, expt):
     return ttp
 
 
+def _affectsoft(data):
+    affect_soft = AffectedSoftware()
+    for software in data['vulnerable_configuration']:
+        id_list = software['id'].split(':')
+        prod_obj = Product()
+        prod_obj.product = software['title']
+        prod_obj.Device_Details = software['id']
+        prod_obj.vendor = id_list[3]
+        if len(id_list) > 6:
+            prod_obj.version = id_list[5] + " " + id_list[6]
+        else:
+            prod_obj.version = id_list[5]
+        prod_obs = Observable(prod_obj)
+        prod_obs.title = "Product: " + software['title']
+        affect_soft.append(prod_obs)
+    return affect_soft
+
+
 def _vulnbuild(data):
     """Do some vulnerability stuff."""
     vuln = Vulnerability()
@@ -94,6 +114,7 @@ def _vulnbuild(data):
     # Create the CVSS object and then assign it to the vulnerability object
     cvssvec = CVSSVector()
     cvssvec.overall_score = data['cvss']
+    vuln.affected_software = _affectsoft(data)
     vuln.cvss_score = cvssvec
     return vuln
 
