@@ -195,6 +195,8 @@ def cvebuild(var):
         if __name__ == '__main__':
             _postconstruct(xml, title)
         return xml
+    else:
+        sys.exit("[-] Error retrieving details for " + var)
 
 
 if __name__ == '__main__':
