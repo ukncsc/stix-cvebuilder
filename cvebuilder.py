@@ -15,7 +15,7 @@ import sys
 
 import requests
 from ares import CVESearch
-from functions import certuk_inbox, taxii_inbox
+from functions import _certuk_inbox, _taxii_inbox
 from stix.coa import CourseOfAction
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
