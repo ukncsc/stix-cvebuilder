@@ -101,15 +101,15 @@ def _vulnbuild(data):
 def _postconstruct(xml, title):
     if CONFIG['ingest'][0]['active']:
         try:
-            certuk_inbox(CONFIG['ingest'][0]['endpoint'] +
-                         CONFIG['ingest'][0]['user'], xml)
+            _certuk_inbox(CONFIG['ingest'][0]['endpoint'] +
+                          CONFIG['ingest'][0]['user'], xml)
             print("[+] Successfully ingested " + title)
         except ValueError:
             print("[+] Failed ingestion for " + title)
     elif CONFIG['taxii'][0]['active']:
         try:
-            taxii_inbox(xml, CONFIG['taxii'][0]['host'],
-                        CONFIG['taxii'][0]['ssl'], CONFIG[
+            _taxii_inbox(xml, CONFIG['taxii'][0]['host'],
+                         CONFIG['taxii'][0]['ssl'], CONFIG[
                 'taxii'][0]['discovery_path'],
                 CONFIG['taxii'][0]['binding'], CONFIG[
                 'taxii'][0]['username'],

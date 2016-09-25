@@ -12,7 +12,7 @@ def _construct_headers():
     return headers
 
 
-def certuk_inbox(endpoint_url, stix_package):
+def _certuk_inbox(endpoint_url, stix_package):
     """Inbox the package to the certuk adapter."""
     data = stix_package
     headers = _construct_headers()
@@ -21,7 +21,7 @@ def certuk_inbox(endpoint_url, stix_package):
     return
 
 
-def taxii_inbox(content, host, ssl, discovery, binding, user, password, inbox):
+def _taxii_inbox(content, host, ssl, discovery, binding, user, password, inbox):
     client = create_client(host, use_https=ssl, discovery_path=discovery)
     content = content
     binding = binding
