@@ -105,13 +105,13 @@ def _postconstruct(xml, title):
                           'endpoint'] + CONFIG['ingest'][0]['user'])
             print("[+] Successfully ingested " + title)
         except ValueError:
-            print("[+] Failed ingestion for " + title)
+            print("[-] Failed ingestion for " + title)
     elif CONFIG['taxii'][0]['active']:
         try:
             _taxii_inbox(xml, CONFIG['taxii'][0])
             print("[+] Successfully inboxed " + title)
         except requests.exceptions.ConnectionError:
-            print("[+] Failed inbox for " + title)
+            print("[-] Failed inbox for " + title)
     else:
         with open(title + ".xml", "w") as text_file:
             text_file.write(xml)
@@ -128,7 +128,7 @@ def lastcve():
             for vulns in data['results']:
                 with open('history.txt', 'ab+') as history_file:
                     if vulns['id'] in history_file.read():
-                        print("[+] Package already generated: " + vulns['id'])
+                        print("[-] Package already generated: " + vulns['id'])
                     else:
                         history_file.seek(0, 2)
                         cvebuild(vulns['id'])
