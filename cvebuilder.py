@@ -153,10 +153,11 @@ def cvebuild(var):
             namespace = {NS: NS_PREFIX}
             set_id_namespace(namespace)
         except ImportError:
-            from stix.utils import idgen
+            from stix.core import STIXPackage
+            from mixbox.idgen import set_id_namespace
             from mixbox.namespaces import Namespace
             namespace = Namespace(NS, NS_PREFIX, "")
-            idgen.set_id_namespace(namespace)
+            set_id_namespace(namespace)
 
         pkg = STIXPackage()
         pkg.stix_header = STIXHeader()
