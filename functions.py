@@ -1,3 +1,10 @@
+"""
+Provides common functions for the CVE-Builder script.
+
+The script provides functionality for both TAXII inboxing aswell as using
+CERT-UK's custom adapter inbox.
+"""
+
 import json
 
 import requests
