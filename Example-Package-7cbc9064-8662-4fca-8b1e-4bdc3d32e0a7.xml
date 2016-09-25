@@ -1,18 +1,20 @@
-<stix:STIX_Package
-	xmlns:certuk="http://www.cert.gov.uk"
-	xmlns:coa="http://stix.mitre.org/CourseOfAction-1"
-	xmlns:cybox="http://cybox.mitre.org/cybox-2"
-	xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
-	xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
-	xmlns:et="http://stix.mitre.org/ExploitTarget-1"
-	xmlns:marking="http://data-marking.mitre.org/Marking-1"
-	xmlns:simpleMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
-	xmlns:stix="http://stix.mitre.org/stix-1"
-	xmlns:stixCommon="http://stix.mitre.org/common-1"
-	xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
+<stix:STIX_Package 
 	xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
-	xmlns:ttp="http://stix.mitre.org/TTP-1"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="certuk:Package-b31bc348-12f5-4c42-9368-e5bf8965ceff" version="1.2">
+	xmlns:coa="http://stix.mitre.org/CourseOfAction-1"
+	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+	xmlns:clownbutt="http://clownbutt.net"
+	xmlns:et="http://stix.mitre.org/ExploitTarget-1"
+	xmlns:stix="http://stix.mitre.org/stix-1"
+	xmlns:cybox="http://cybox.mitre.org/cybox-2"
+	xmlns:marking="http://data-marking.mitre.org/Marking-1"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:stixCommon="http://stix.mitre.org/common-1"
+	xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
+	xmlns:ProductObj="http://cybox.mitre.org/objects#ProductObject-2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:simpleMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	 id="clownbutt:Package-67d2a4fc-f9a6-4b65-8692-7e5d5adde2df" version="1.2">
     <stix:STIX_Header>
         <stix:Handling>
             <marking:Marking>
@@ -24,164 +26,8 @@
             </marking:Marking>
         </stix:Handling>
     </stix:STIX_Header>
-    <stix:TTPs>
-        <stix:TTP id="certuk:ttp-9b2c994b-c334-43b3-9b10-ef4f9624a1af" timestamp="2016-03-01T10:20:54.788909+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>Filter Failure through Buffer Overflow</ttp:Title>
-            <ttp:Description>In this attack, the idea is to cause an active filter to fail by causing an oversized transaction. An attacker may try to feed overly long input strings to the program in an attempt to overwhelm the filter (by causing a buffer overflow) and hoping that the filter does not fail securely (i.e. the user input is let into the system unfiltered).</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-24"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-        <stix:TTP id="certuk:ttp-6b1ebbcb-6a04-480e-aac4-51bb3d0c5771" timestamp="2016-03-01T10:20:54.789811+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>MIME Conversion</ttp:Title>
-            <ttp:Description>An attacker exploits a weakness in the MIME conversion routine to cause a buffer overflow and gain control over the mail server machine. The MIME system is designed to allow various different information formats to be interpreted and sent via e-mail. Attack points exist when data are converted to MIME compatible format and back.</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-42"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-        <stix:TTP id="certuk:ttp-5d8a361c-b1e0-4930-8e26-e2ff8365fc6d" timestamp="2016-03-01T10:20:54.790399+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>Overflow Binary Resource File</ttp:Title>
-            <ttp:Description>An attack of this type exploits a buffer overflow vulnerability in the handling of binary resources. Binary resources may include music files like MP3, image files like JPEG files, and any other binary file. These attacks may pass unnoticed to the client machine through normal usage of files, such as a browser loading a seemingly innocent JPEG file. This can allow the attacker access to the execution stack and execute arbitrary code in the target process. This attack pattern is a variant of standard buffer overflow attacks using an unexpected vector (binary files) to wrap its attack and open up a new attack vector. The attacker is required to either directly serve the binary content to the victim, or place it in a locale like a MP3 sharing application, for the victim to download. The attacker then is notified upon the download or otherwise locates the vulnerability opened up by the buffer overflow.</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-44"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-        <stix:TTP id="certuk:ttp-08913945-26e1-4dd9-a0b8-4c473633fc67" timestamp="2016-03-01T10:20:54.790910+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>Buffer Overflow via Symbolic Links</ttp:Title>
-            <ttp:Description>This type of attack leverages the use of symbolic links to cause buffer overflows. An attacker can try to create or manipulate a symbolic link file such that its contents result in out of bounds data. When the target software processes the symbolic link file, it could potentially overflow internal buffers with insufficient bounds checking.</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-45"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-        <stix:TTP id="certuk:ttp-f1217de8-15dd-4a59-8c1a-8db86e7f3371" timestamp="2016-03-01T10:20:54.791419+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>Overflow Variables and Tags</ttp:Title>
-            <ttp:Description>This type of attack leverages the use of tags or variables from a formatted configuration data to cause buffer overflow. The attacker crafts a malicious HTML page or configuration file that includes oversized strings, thus causing an overflow.</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-46"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-        <stix:TTP id="certuk:ttp-2a89cd4a-4b76-4c3a-be5c-e8b0d650cecd" timestamp="2016-03-01T10:20:54.792037+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>Buffer Overflow via Parameter Expansion</ttp:Title>
-            <ttp:Description>In this attack, the target software is given input that the attacker knows will be modified and expanded in size during processing. This attack relies on the target software failing to anticipate that the expanded data may exceed some internal limit, thereby creating a buffer overflow.</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-47"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-        <stix:TTP id="certuk:ttp-a93332f4-6071-48d9-84e3-476bae4d3757" timestamp="2016-03-01T10:20:54.792709+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>Buffer Overflow in an API Call</ttp:Title>
-            <ttp:Description>This attack targets libraries or shared code modules which are vulnerable to buffer overflow attacks. An attacker who has access to an API may try to embed malicious code in the API function call and exploit a buffer overflow vulnerability in the function's implementation. All clients that make use of the code library thus become vulnerable by association. This has a very broad effect on security across a system, usually affecting more than one software process.</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-8"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-        <stix:TTP id="certuk:ttp-0cfe382f-b833-4092-a495-d0e790cf4201" timestamp="2016-03-01T10:20:54.793219+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>Buffer Overflow in Local Command-Line Utilities</ttp:Title>
-            <ttp:Description>This attack targets command-line utilities available in a number of shells. An attacker can leverage a vulnerability found in a command-line utility to escalate privilege to root.</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-9"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-        <stix:TTP id="certuk:ttp-5413a57f-207d-43db-b28b-7099218edd92" timestamp="2016-03-01T10:20:54.793758+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>Buffer Overflow via Environment Variables</ttp:Title>
-            <ttp:Description>This attack pattern involves causing a buffer overflow through manipulation of environment variables. Once the attacker finds that they can modify an environment variable, they may try to overflow associated buffers. This attack leverages implicit trust often placed in environment variables.</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-10"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-        <stix:TTP id="certuk:ttp-6e489b3f-576d-4838-8004-562ce7551b16" timestamp="2016-03-01T10:20:54.794330+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>Overflow Buffers</ttp:Title>
-            <ttp:Description>Buffer Overflow attacks target improper or missing bounds checking on buffer operations, typically triggered by input injected by an attacker. As a consequence, an attacker is able to write past the boundaries of allocated buffer regions in memory, causing a program crash or potentially redirection of execution as per the attackers' choice.</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-100"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-        <stix:TTP id="certuk:ttp-2a4d2770-c40c-4db8-bdb5-5be4295a13d8" timestamp="2016-03-01T10:20:54.794823+00:00" xsi:type='ttp:TTPType'>
-            <ttp:Title>Client-side Injection-induced Buffer Overflow</ttp:Title>
-            <ttp:Description>This type of attack exploits a buffer overflow vulnerability in targeted client software through injection of malicious content from a custom-built hostile service.</ttp:Description>
-            <ttp:Behavior>
-                <ttp:Attack_Patterns>
-                    <ttp:Attack_Pattern capec_id="CAPEC-14"/>
-                </ttp:Attack_Patterns>
-            </ttp:Behavior>
-            <ttp:Exploit_Targets>
-                <ttp:Exploit_Target>
-                    <stixCommon:Exploit_Target idref="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" xsi:type='et:ExploitTargetType'/>
-                </ttp:Exploit_Target>
-            </ttp:Exploit_Targets>
-        </stix:TTP>
-    </stix:TTPs>
     <stix:Exploit_Targets>
-        <stixCommon:Exploit_Target id="certuk:et-18fe9c9e-afdb-481f-8e84-2f4d1c399696" timestamp="2016-03-01T10:20:54.787997+00:00" xsi:type='et:ExploitTargetType'>
+        <stixCommon:Exploit_Target id="clownbutt:et-aa15b655-9024-4d5d-ac7f-e0ea753435a0" timestamp="2016-09-25T20:37:41.801098Z" xsi:type='et:ExploitTargetType'>
             <et:Title>CVE-2015-5119</et:Title>
             <et:Description>Use-after-free vulnerability in the ByteArray class in the ActionScript 3 (AS3) implementation in Adobe Flash Player 13.x through 13.0.0.296 and 14.x through 18.0.0.194 on Windows and OS X and 11.x through 11.2.202.468 on Linux allows remote attackers to execute arbitrary code or cause a denial of service (memory corruption) via crafted Flash content that overrides a ValueOf function, as exploited in the wild in July 2015.</et:Description>
             <et:Vulnerability is_known="true">
@@ -192,6 +38,293 @@
                 <et:CVSS_Score>
 <et:Overall_Score>10.0</et:Overall_Score>
                 </et:CVSS_Score>
+                <et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-2bffea9f-f99b-4b5b-9a7d-05bbcea9cc7d">
+                            <cybox:Title>Product: Adobe Flash Player 13.0.0.292</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-54c155ef-de94-4d71-8544-d27eff891f73">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 13.0.0.292</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>13.0.0.292</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-e92182fb-dce5-44f2-8bba-b415dfc6e04c">
+                            <cybox:Title>Product: Adobe Flash Player 14.0.0.125</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-ac7566f5-49e9-4123-9941-adabce6dfff9">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 14.0.0.125</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>14.0.0.125</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-f2b43b83-0e44-4bd2-886f-d518beaeb65a">
+                            <cybox:Title>Product: Adobe Flash Player 14.0.0.145</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-b60e82e5-3dbe-45ff-82cf-b538aa89bd3b">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 14.0.0.145</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>14.0.0.145</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-9a46fe85-23a4-49d8-ac22-1c5d3fad77da">
+                            <cybox:Title>Product: Adobe Flash Player 14.0.0.176</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-b01b5caf-513a-4bce-8012-5dadcbf89da9">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 14.0.0.176</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>14.0.0.176</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-5c1c1c4d-f19c-4bb4-9eee-244da88ac296">
+                            <cybox:Title>Product: Adobe Flash Player 14.0.0.179</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-1ae81cf5-2c78-4ca1-9221-33beff415af3">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 14.0.0.179</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>14.0.0.179</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-76562d23-6253-47da-8616-af662d7d0fc5">
+                            <cybox:Title>Product: Adobe Flash Player 15.0.0.152</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-c6b33e39-4969-4ccc-9c18-407d7925bf96">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 15.0.0.152</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>15.0.0.152</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-ee17df8f-ab48-4928-876c-65484f80e85e">
+                            <cybox:Title>Product: Adobe Flash Player 15.0.0.167</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-1bb609ac-7df8-4505-b6b8-93a3c14af1b5">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 15.0.0.167</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>15.0.0.167</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-d6a99911-c732-4a91-889d-8a2849964db1">
+                            <cybox:Title>Product: Adobe Flash Player 15.0.0.189</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-c94563a3-f783-4e23-94ed-321f728addc8">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 15.0.0.189</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>15.0.0.189</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-7661854c-dfc4-40a3-9669-d104ad6c720b">
+                            <cybox:Title>Product: Adobe Flash Player 15.0.0.223</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-1d3c3222-5ff1-4a11-ba86-d7508e02ce0b">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 15.0.0.223</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>15.0.0.223</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-ae23c1fa-dd0c-4df7-876e-8579080452b8">
+                            <cybox:Title>Product: Adobe Flash Player 15.0.0.239</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-0636ed0b-cbfe-44eb-ac2a-f6d768b70d5a">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 15.0.0.239</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>15.0.0.239</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-904adee5-c903-4a5a-a9fc-23b8a5d4eaa6">
+                            <cybox:Title>Product: Adobe Flash Player 15.0.0.246</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-9ea074ef-1d35-487e-b8c4-9db652009297">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 15.0.0.246</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>15.0.0.246</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-eb641e68-681a-499a-ae9c-509f268ebe33">
+                            <cybox:Title>Product: Adobe Flash Player 16.0.0.235</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-15ec6379-a83d-4605-b98b-feb67cd9bbbc">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 16.0.0.235</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>16.0.0.235</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-a5f367d8-1a7a-48ef-a342-f2a9ff255beb">
+                            <cybox:Title>Product: Adobe Flash Player 16.0.0.257</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-21df1010-01d1-492e-8657-ec72ba6dcdcd">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 16.0.0.257</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>16.0.0.257</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-c1fe603b-c521-40ac-b446-7f54a8ecaa9b">
+                            <cybox:Title>Product: Adobe Flash Player 16.0.0.287</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-b9046c94-889d-453a-afbf-2560431468cb">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 16.0.0.287</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>16.0.0.287</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-0585195e-6515-4f37-99e4-463f2eb0605e">
+                            <cybox:Title>Product: Adobe Flash Player 16.0.0.296</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-f8e2d00d-0483-42d0-af7f-f19add6876bc">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 16.0.0.296</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>16.0.0.296</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-634643cf-981c-444d-acbb-076191241d21">
+                            <cybox:Title>Product: Adobe Flash Player 17.0.0.134</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-34062462-5186-4bca-81c5-7885bf4a1d6d">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 17.0.0.134</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>17.0.0.134</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-ba3174ae-e4cf-4780-9c11-cd213a034485">
+                            <cybox:Title>Product: Adobe Flash Player 17.0.0.169</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-cee34106-ff66-4c43-bf6f-215f806d5473">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 17.0.0.169</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>17.0.0.169</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-306f714f-4472-40fd-bdca-877214e27ab4">
+                            <cybox:Title>Product: cpe:2.3:a:adobe:flash_player:17.0.0.188</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-35ae4d3b-5212-417a-b31d-d7eb88128181">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>cpe:2.3:a:adobe:flash_player:17.0.0.188</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>17.0.0.188</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-528161df-151c-4b25-9540-62ac878ddc43">
+                            <cybox:Title>Product: Adobe Flash Player 18.0.0.161</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-fef0e2aa-1e30-4f80-aca8-4652f182c330">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 18.0.0.161</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>18.0.0.161</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-dd53b451-6797-4b7b-bba4-3c9a48344eb8">
+                            <cybox:Title>Product: Adobe Flash Player 18.0.0.194</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-c7a06826-028c-4081-bf7b-e7164ba564ad">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 18.0.0.194</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>18.0.0.194</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-decf4795-d7a9-4430-af0d-f0605c0fed9c">
+                            <cybox:Title>Product: Microsoft Windows</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-f36c3393-2fcf-4b2e-a6b6-c4b835a373d6">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Microsoft Windows</ProductObj:Product>
+                                    <ProductObj:Vendor>microsoft</ProductObj:Vendor>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-9e38c2bc-c743-4a23-b45f-eaf3e2383614">
+                            <cybox:Title>Product: Apple Mac OS X</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-af514200-5bbb-42f6-886b-7923d630b7cb">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Apple Mac OS X</ProductObj:Product>
+                                    <ProductObj:Vendor>apple</ProductObj:Vendor>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-97b8de70-7b87-473e-86ac-2e8a856006fd">
+                            <cybox:Title>Product: Adobe Flash Player 11.2.202.468</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-779532dc-2126-4b84-8e12-239b2be083d3">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Adobe Flash Player 11.2.202.468</ProductObj:Product>
+                                    <ProductObj:Vendor>adobe</ProductObj:Vendor>
+                                    <ProductObj:Version>11.2.202.468</ProductObj:Version>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                    <et:Affected_Software>
+                        <stixCommon:Observable id="clownbutt:Observable-39c93a1b-2acb-4443-8f02-ade04c6bcd5e">
+                            <cybox:Title>Product: Linux Kernel</cybox:Title>
+                            <cybox:Object id="clownbutt:Product-67ed9d44-3f21-496b-9c74-5ee5087aae6b">
+                                <cybox:Properties xsi:type="ProductObj:ProductObjectType">
+                                    <ProductObj:Product>Linux Kernel</ProductObj:Product>
+                                    <ProductObj:Vendor>linux</ProductObj:Vendor>
+                                </cybox:Properties>
+                            </cybox:Object>
+                        </stixCommon:Observable>
+                    </et:Affected_Software>
+                </et:Affected_Software>
                 <et:References>
                     <stixCommon:Reference>http://www.us-cert.gov/ncas/alerts/TA15-195A</stixCommon:Reference>
                     <stixCommon:Reference>http://www.kb.cert.org/vuls/id/561288</stixCommon:Reference>
@@ -207,7 +340,7 @@
             </et:Weakness>
             <et:Potential_COAs>
                 <et:Potential_COA>
-                    <stixCommon:Course_Of_Action idref="certuk:coa-c5780d4e-b3a1-4c6a-8b85-4b5ab27724b1" timestamp="2016-03-01T10:20:54.787997+00:00" xsi:type='coa:CourseOfActionType'/>
+                    <stixCommon:Course_Of_Action idref="clownbutt:coa-f5440b8a-9b60-4745-bf88-9ebd1bd8b2ad" timestamp="2016-09-25T20:37:41.801098Z" xsi:type='coa:CourseOfActionType'/>
                 </et:Potential_COA>
             </et:Potential_COAs>
             <et:Information_Source>
