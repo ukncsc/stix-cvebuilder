@@ -211,5 +211,8 @@ if __name__ == '__main__':
     PARSER.add_argument('-l', '--last', action='store_true',
                         help='Pulls down and converts the latest 30 CVEs')
     ARGS = PARSER.parse_args()
+    if len(sys.argv) == 1:
+        PARSER.print_help()
+        sys.exit(1)
     if ARGS.last:
         lastcve()
