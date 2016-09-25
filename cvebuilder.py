@@ -99,14 +99,14 @@ def _vulnbuild(data):
 
 
 def _postconstruct(xml, title):
-    if CONFIG['ingest'][0]['active'] == True:
+    if CONFIG['ingest'][0]['active']:
         try:
             certuk_inbox(CONFIG['ingest'][0]['endpoint'] +
                          CONFIG['ingest'][0]['user'], xml)
             print("[+] Successfully ingested " + title)
         except ValueError:
             print("[+] Failed ingestion for " + title)
-    elif CONFIG['taxii'][0]['active'] == True:
+    elif CONFIG['taxii'][0]['active']:
         try:
             taxii_inbox(xml, CONFIG['taxii'][0]['host'],
                         CONFIG['taxii'][0]['ssl'], CONFIG[
@@ -134,7 +134,7 @@ def lastcve():
             for vulns in data['results']:
                 with open('history.txt', 'ab+') as history_file:
                     if vulns['id'] in history_file.read():
-                        print("[+] Package already generated for " + vulns['id'])
+                        print("[+] Package already generated: " + vulns['id'])
                     else:
                         history_file.seek(0, 2)
                         cvebuild(vulns['id'])
@@ -206,11 +206,11 @@ def cvebuild(var):
 
 if __name__ == '__main__':
     PARSER = argparse.ArgumentParser(
-        description='Search for a CVE ID and return a STIX formatted response.')
+        description='Search for a CVE ID & return a STIX formatted response.')
     PARSER.add_argument('-i', '--id', type=cvebuild,
                         help='Enter the CVE ID that you want to grab')
     PARSER.add_argument('-l', '--last', action='store_true',
                         help='Pulls down and converts the latest 30 CVEs')
     ARGS = PARSER.parse_args()
-    if ARGS.last == True:
+    if ARGS.last:
         lastcve()
