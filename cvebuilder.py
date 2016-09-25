@@ -32,10 +32,10 @@ PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 with open('config.json') as data_file:
     CONFIG = json.load(data_file)
 
-NS_PREFIX = CONFIG['stix'][0]['ns_prefix']
-NS = CONFIG['stix'][0]['ns']
+NS_PREFIX = CONFIG['stix']['ns_prefix']
+NS = CONFIG['stix']['ns']
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
-HNDL_ST = "This information may be distributed without restriction."
+HNDL_ST = CONFIG['stix']['handling']
 COAS = CONFIG['coas']
 TTPON = CONFIG['ttp']
 
