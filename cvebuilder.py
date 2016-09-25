@@ -15,6 +15,7 @@ import sys
 
 import requests
 from ares import CVESearch
+from functions import certuk_inbox, taxii_inbox
 from stix.coa import CourseOfAction
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
@@ -25,9 +26,6 @@ from stix.extensions.marking.simple_marking import SimpleMarkingStructure
 from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
-
-import common.ingest as ingest
-import common.taxii as taxii
 
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 
@@ -103,14 +101,14 @@ def _vulnbuild(data):
 def _postconstruct(xml, title):
     if CONFIG['ingest'][0]['active'] == True:
         try:
-            ingest.inbox_package(CONFIG['ingest'][0]['endpoint'] +
-                                 CONFIG['ingest'][0]['user'], xml)
+            certuk_inbox(CONFIG['ingest'][0]['endpoint'] +
+                         CONFIG['ingest'][0]['user'], xml)
             print("[+] Successfully ingested " + title)
         except ValueError:
             print("[+] Failed ingestion for " + title)
     elif CONFIG['taxii'][0]['active'] == True:
         try:
-            taxii.taxii(xml, CONFIG['taxii'][0]['host'],
+            taxii_inbox(xml, CONFIG['taxii'][0]['host'],
                         CONFIG['taxii'][0]['ssl'], CONFIG[
                 'taxii'][0]['discovery_path'],
                 CONFIG['taxii'][0]['binding'], CONFIG[
