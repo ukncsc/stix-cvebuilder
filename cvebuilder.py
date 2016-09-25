@@ -15,6 +15,7 @@ import sys
 
 import requests
 from ares import CVESearch
+from functions import _certuk_inbox, _taxii_inbox
 from stix.coa import CourseOfAction
 from stix.common import Identity, InformationSource
 from stix.core import STIXHeader, STIXPackage
@@ -26,18 +27,15 @@ from stix.extensions.marking.tlp import TLPMarkingStructure
 from stix.ttp import TTP, Behavior
 from stix.ttp.behavior import AttackPattern
 
-import common.ingest as ingest
-import common.taxii as taxii
-
 PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 
 with open('config.json') as data_file:
     CONFIG = json.load(data_file)
 
-NS_PREFIX = CONFIG['stix'][0]['ns_prefix']
-NS = CONFIG['stix'][0]['ns']
+NS_PREFIX = CONFIG['stix']['ns_prefix']
+NS = CONFIG['stix']['ns']
 NVD_URL = "https://web.nvd.nist.gov/view/vuln/detail?vulnId="
-HNDL_ST = "This information may be distributed without restriction."
+HNDL_ST = CONFIG['stix']['handling']
 COAS = CONFIG['coas']
 TTPON = CONFIG['ttp']
 
@@ -101,25 +99,19 @@ def _vulnbuild(data):
 
 
 def _postconstruct(xml, title):
-    if CONFIG['ingest'][0]['active'] == True:
+    if CONFIG['ingest'][0]['active']:
         try:
-            ingest.inbox_package(CONFIG['ingest'][0]['endpoint'] +
-                                 CONFIG['ingest'][0]['user'], xml)
+            _certuk_inbox(xml, CONFIG['ingest'][0][
+                          'endpoint'] + CONFIG['ingest'][0]['user'])
             print("[+] Successfully ingested " + title)
         except ValueError:
-            print("[+] Failed ingestion for " + title)
-    elif CONFIG['taxii'][0]['active'] == True:
+            print("[-] Failed ingestion for " + title)
+    elif CONFIG['taxii'][0]['active']:
         try:
-            taxii.taxii(xml, CONFIG['taxii'][0]['host'],
-                        CONFIG['taxii'][0]['ssl'], CONFIG[
-                'taxii'][0]['discovery_path'],
-                CONFIG['taxii'][0]['binding'], CONFIG[
-                'taxii'][0]['username'],
-                CONFIG['taxii'][0]['password'],
-                CONFIG['taxii'][0]['inbox_path'])
+            _taxii_inbox(xml, CONFIG['taxii'][0])
             print("[+] Successfully inboxed " + title)
         except requests.exceptions.ConnectionError:
-            print("[+] Failed inbox for " + title)
+            print("[-] Failed inbox for " + title)
     else:
         with open(title + ".xml", "w") as text_file:
             text_file.write(xml)
@@ -136,7 +128,7 @@ def lastcve():
             for vulns in data['results']:
                 with open('history.txt', 'ab+') as history_file:
                     if vulns['id'] in history_file.read():
-                        print("[+] Package already generated for " + vulns['id'])
+                        print("[-] Package already generated: " + vulns['id'])
                     else:
                         history_file.seek(0, 2)
                         cvebuild(vulns['id'])
@@ -155,10 +147,10 @@ def cvebuild(var):
             namespace = {NS: NS_PREFIX}
             set_id_namespace(namespace)
         except ImportError:
-            from stix.utils import idgen
+            from mixbox.idgen import set_id_namespace
             from mixbox.namespaces import Namespace
             namespace = Namespace(NS, NS_PREFIX, "")
-            idgen.set_id_namespace(namespace)
+            set_id_namespace(namespace)
 
         pkg = STIXPackage()
         pkg.stix_header = STIXHeader()
@@ -203,15 +195,20 @@ def cvebuild(var):
         if __name__ == '__main__':
             _postconstruct(xml, title)
         return xml
+    else:
+        sys.exit("[-] Error retrieving details for " + var)
 
 
 if __name__ == '__main__':
     PARSER = argparse.ArgumentParser(
-        description='Search for a CVE ID and return a STIX formatted response.')
+        description='Search for a CVE ID & return a STIX formatted response.')
     PARSER.add_argument('-i', '--id', type=cvebuild,
                         help='Enter the CVE ID that you want to grab')
     PARSER.add_argument('-l', '--last', action='store_true',
                         help='Pulls down and converts the latest 30 CVEs')
     ARGS = PARSER.parse_args()
-    if ARGS.last == True:
+    if len(sys.argv) == 1:
+        PARSER.print_help()
+        sys.exit(1)
+    if ARGS.last:
         lastcve()
