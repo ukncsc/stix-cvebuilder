@@ -1,3 +1,11 @@
+Copyright (c) 2016 Crown Copyright (CERT-UK)
+
+Permission is hereby granted, free of charge, to use, copy, modify, merge, distribute and/or sub-licence the software together with any associated documentation provided that it is solely for your own internal use and subject to the following conditions:
+
+(1) The above copyright notice and this permission notice shall be included in all copies or substantial portions of the software.
+
+(2) THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN ANY ACTION FOR CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 # CVE-Builder
 
 [![Code Health](https://landscape.io/github/certuk/cve-builder/master/landscape.svg?style=flat)](https://landscape.io/github/certuk/cve-builder/master)
@@ -6,9 +14,11 @@ CVE Builder script that generates STIX Exploit Targets.
 
 The script will look at the first parameter as the CVE number and uses the ares module (<https://github.com/mrsmn/ares>), to provide data from <https://cve.circl.lu/>. This provides a quick and easy method of prototyping the core information from publicly available CVE information into a STIX package.
 
-Additional support is available for ingestion using the CERT-UK Edge mods or using native TAXII.
+Once generated the script has support for ingestion using the CERT-UK Edge mods or using native TAXII. If neither of these methods are required then the script will dump the XML into the current directory of the script.
 
-Full warning this script is still a work in progress and is by no means a one stop shop to build a fully featured exploit target in STIX. Your own mileage may vary.
+## Status
+
+The script is still under active development and as such shouldn't be considered a finished product.
 
 ## Setup
 
@@ -41,12 +51,12 @@ Once setup your file should look like this:
       "user": "bot"
     }
   ],
-  "stix": [
+  "stix":
     {
       "ns": "http://avengers.com",
-      "ns_prefix": "avengers"
-    }
-  ],
+      "ns_prefix": "avengers",
+      "handling": "This information may be distributed without restriction."
+    },
   "taxii": [
     {
       "active": false,
@@ -91,7 +101,7 @@ Or if you wanted to get the last 30 CVE IDs.
 $ python cvebuilder.py -l
 ```
 
-Both of these commands will generate the STIX file for the CVE ID unless you have enabled either the TAXII or Ingest options in the `config.json` file.
+Both of these commands will generate the STIX file for the CVE ID unless you have enabled either the TAXII or CERT-UK Ingest options in the `config.json` file.
 
 Or you can use it as a module within your own script.
 
@@ -120,8 +130,6 @@ The following python libraries are required and can be installed with pip.
 $ sudo pip install -r requirements.txt
 ```
 
-## License
+## Feedback
 
-See the
-
-<license> file for license rights and limitations (GPLv3).</license>
+We would welcome feedback on this script and the functionality it provides. Please raise an issue on GitHub.
