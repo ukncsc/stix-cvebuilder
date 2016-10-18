@@ -1,4 +1,4 @@
-Copyright (c) 2016 Crown Copyright (CERT-UK)
+Copyright (c) 2016 Crown Copyright (NCSC)
 
 Permission is hereby granted, free of charge, to use, copy, modify, merge, distribute and/or sub-licence the software together with any associated documentation provided that it is solely for your own internal use and subject to the following conditions:
 
@@ -8,13 +8,13 @@ Permission is hereby granted, free of charge, to use, copy, modify, merge, distr
 
 # CVE-Builder
 
-[![Code Health](https://landscape.io/github/certuk/cve-builder/master/landscape.svg?style=flat)](https://landscape.io/github/certuk/cve-builder/master)
+[![Code Health](https://landscape.io/github/ncscuk/cve-builder/master/landscape.svg?style=flat)](https://landscape.io/github/ncscuk/cve-builder/master)
 
 CVE Builder script that generates STIX Exploit Targets.
 
 The script will look at the first parameter as the CVE number and uses the ares module (<https://github.com/mrsmn/ares>), to provide data from <https://cve.circl.lu/>. This provides a quick and easy method of prototyping the core information from publicly available CVE information into a STIX package.
 
-Once generated the script has support for ingestion using the CERT-UK Edge mods or using native TAXII. If neither of these methods are required then the script will dump the XML into the current directory of the script.
+Once generated the script has support for ingestion using the NCSC Edge mods or using native TAXII. If neither of these methods are required then the script will dump the XML into the current directory of the script.
 
 ## Status
 
